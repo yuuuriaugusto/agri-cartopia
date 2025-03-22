@@ -7,7 +7,7 @@ import { type Product } from '@/context/ProductContext';
 
 interface AddToCartButtonProps {
   product: Product;
-  size?: 'sm' | 'md' | 'lg';
+  size?: 'default' | 'sm' | 'lg'; // Changed 'md' to 'default' to match Button component's types
   variant?: 'default' | 'outline' | 'secondary';
   showText?: boolean;
   quantity?: number;
@@ -16,7 +16,7 @@ interface AddToCartButtonProps {
 
 const AddToCartButton = ({ 
   product, 
-  size = 'md', 
+  size = 'default', // Changed default from 'md' to 'default'
   variant = 'default',
   showText = false,
   quantity = 1,
