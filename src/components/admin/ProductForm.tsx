@@ -1,4 +1,3 @@
-
 import React, { useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { productService, CreateProductData } from '@/services/ProductService';
@@ -9,6 +8,7 @@ import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { Switch } from "@/components/ui/switch";
 import { Label } from "@/components/ui/label";
+import { Trash2 } from 'lucide-react';
 import {
   Form,
   FormControl,
@@ -65,7 +65,6 @@ const ProductForm = ({ product, onSubmit }: ProductFormProps) => {
   const handleFormSubmit = async (data: FormValues) => {
     setIsLoading(true);
     try {
-      // Parse specs from string to object
       let specs = {};
       try {
         specs = JSON.parse(data.specs);
@@ -74,7 +73,6 @@ const ProductForm = ({ product, onSubmit }: ProductFormProps) => {
         return;
       }
       
-      // Filter out empty features and image URLs
       const features = data.features.filter(feature => feature.trim() !== '');
       const images = data.images.filter(img => img.trim() !== '');
       
@@ -86,11 +84,9 @@ const ProductForm = ({ product, onSubmit }: ProductFormProps) => {
       };
       
       if (product) {
-        // Update existing product
         await productService.updateProduct(product.id, productData);
         toast.success('Product updated successfully');
       } else {
-        // Create new product
         await productService.createProduct(productData);
         toast.success('Product created successfully');
       }

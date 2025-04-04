@@ -1,4 +1,3 @@
-
 import React, { useState } from "react";
 import { 
   Table, 
@@ -58,7 +57,7 @@ const OrderDetails = ({ order, onClose }: OrderDetailsProps) => {
         <Badge variant={
           order.status === 'Processing' ? 'default' :
           order.status === 'Shipped' ? 'secondary' :
-          order.status === 'Delivered' ? 'success' : 'destructive'
+          order.status === 'Delivered' ? 'secondary' : 'destructive'
         }>
           {order.status}
         </Badge>
