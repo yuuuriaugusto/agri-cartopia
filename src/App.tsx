@@ -1,3 +1,4 @@
+
 import { Toaster } from "@/components/ui/toaster";
 import { Toaster as Sonner } from "@/components/ui/sonner";
 import { TooltipProvider } from "@/components/ui/tooltip";
@@ -42,63 +43,57 @@ const ProductContextExposer = ({ children }: { children: React.ReactNode }) => {
   return <>{children}</>;
 };
 
-// Responsive Layout Selector
-const ResponsiveAdminRoutes = () => {
+const App = () => {
   const isMobile = useIsMobile();
   
   return (
-    <>
-      {/* Use different layouts based on device */}
-      {isMobile ? (
-        <Route path="/admin" element={<MobileAdminLayout />}>
-          <Route path="dashboard" element={<Dashboard />} />
-          <Route path="products" element={<AdminProducts />} />
-          <Route path="orders" element={<Orders />} />
-          <Route path="customers" element={<Customers />} />
-        </Route>
-      ) : (
-        <Route path="/admin" element={<AdminLayout />}>
-          <Route path="dashboard" element={<Dashboard />} />
-          <Route path="products" element={<AdminProducts />} />
-          <Route path="orders" element={<Orders />} />
-          <Route path="customers" element={<Customers />} />
-        </Route>
-      )}
-    </>
+    <QueryClientProvider client={queryClient}>
+      <ProductProvider>
+        <CartProvider>
+          <TooltipProvider>
+            <Toaster />
+            <Sonner />
+            <BrowserRouter>
+              <ProductContextExposer>
+                <Routes>
+                  {/* Public Routes */}
+                  <Route path="/" element={<Index />} />
+                  <Route path="/products" element={<Products />} />
+                  <Route path="/products/:id" element={<ProductDetail />} />
+                  <Route path="/cart" element={<Cart />} />
+                  <Route path="/checkout" element={<Checkout />} />
+                  <Route path="/order-tracking" element={<OrderTracking />} />
+                  <Route path="/login" element={<Login />} />
+                  
+                  {/* Admin Routes - Conditionally render based on device */}
+                  {isMobile ? (
+                    /* Mobile Admin Routes */
+                    <Route path="/admin" element={<MobileAdminLayout />}>
+                      <Route path="dashboard" element={<Dashboard />} />
+                      <Route path="products" element={<AdminProducts />} />
+                      <Route path="orders" element={<Orders />} />
+                      <Route path="customers" element={<Customers />} />
+                    </Route>
+                  ) : (
+                    /* Desktop Admin Routes */
+                    <Route path="/admin" element={<AdminLayout />}>
+                      <Route path="dashboard" element={<Dashboard />} />
+                      <Route path="products" element={<AdminProducts />} />
+                      <Route path="orders" element={<Orders />} />
+                      <Route path="customers" element={<Customers />} />
+                    </Route>
+                  )}
+                  
+                  {/* 404 - Catch-all */}
+                  <Route path="*" element={<NotFound />} />
+                </Routes>
+              </ProductContextExposer>
+            </BrowserRouter>
+          </TooltipProvider>
+        </CartProvider>
+      </ProductProvider>
+    </QueryClientProvider>
   );
 };
-
-const App = () => (
-  <QueryClientProvider client={queryClient}>
-    <ProductProvider>
-      <CartProvider>
-        <TooltipProvider>
-          <Toaster />
-          <Sonner />
-          <BrowserRouter>
-            <ProductContextExposer>
-              <Routes>
-                {/* Public Routes */}
-                <Route path="/" element={<Index />} />
-                <Route path="/products" element={<Products />} />
-                <Route path="/products/:id" element={<ProductDetail />} />
-                <Route path="/cart" element={<Cart />} />
-                <Route path="/checkout" element={<Checkout />} />
-                <Route path="/order-tracking" element={<OrderTracking />} />
-                <Route path="/login" element={<Login />} />
-                
-                {/* Admin Routes */}
-                <ResponsiveAdminRoutes />
-                
-                {/* 404 - Catch-all */}
-                <Route path="*" element={<NotFound />} />
-              </Routes>
-            </ProductContextExposer>
-          </BrowserRouter>
-        </TooltipProvider>
-      </CartProvider>
-    </ProductProvider>
-  </QueryClientProvider>
-);
 
 export default App;
