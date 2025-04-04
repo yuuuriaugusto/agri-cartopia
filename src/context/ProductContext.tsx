@@ -27,6 +27,10 @@ interface ProductContextType {
   getProductById: (id: string) => Product | undefined;
   getProductsByCategory: (category: string) => Product[];
   getRelatedProducts: (id: string, limit?: number) => Product[];
+  // CRUD operations
+  addProduct: (product: Omit<Product, "id">) => string;
+  updateProduct: (id: string, updates: Partial<Product>) => boolean;
+  deleteProduct: (id: string) => boolean;
 }
 
 // Sample data
@@ -320,20 +324,24 @@ const sampleProducts: Product[] = [
 // Context
 const ProductContext = createContext<ProductContextType | undefined>(undefined);
 
-// Provider
+// Provider component
 export const ProductProvider = ({ children }: { children: ReactNode }) => {
-  const [products] = useState<Product[]>(sampleProducts);
+  const [products, setProducts] = useState<Product[]>(sampleProducts);
   
+  // Get featured products
   const featuredProducts = products.filter(product => product.isFeatured);
   
+  // Get product by ID
   const getProductById = (id: string) => {
     return products.find(product => product.id === id);
   };
   
+  // Get products by category
   const getProductsByCategory = (category: string) => {
     return products.filter(product => product.category === category);
   };
   
+  // Get related products
   const getRelatedProducts = (id: string, limit: number = 4) => {
     const currentProduct = getProductById(id);
     if (!currentProduct) return [];
@@ -346,6 +354,49 @@ export const ProductProvider = ({ children }: { children: ReactNode }) => {
       )
       .slice(0, limit);
   };
+
+  // CRUD operations for products
+  const addProduct = (product: Omit<Product, "id">) => {
+    const newId = `product-${Date.now()}`;
+    const newProduct = { id: newId, ...product };
+    
+    setProducts(prevProducts => [...prevProducts, newProduct]);
+    return newId;
+  };
+  
+  const updateProduct = (id: string, updates: Partial<Product>) => {
+    let updated = false;
+    
+    setProducts(prevProducts => 
+      prevProducts.map(product => {
+        if (product.id === id) {
+          updated = true;
+          return { ...product, ...updates };
+        }
+        return product;
+      })
+    );
+    
+    return updated;
+  };
+  
+  const deleteProduct = (id: string) => {
+    let deleted = false;
+    
+    setProducts(prevProducts => {
+      const newProducts = prevProducts.filter(product => {
+        if (product.id === id) {
+          deleted = true;
+          return false;
+        }
+        return true;
+      });
+      
+      return newProducts;
+    });
+    
+    return deleted;
+  };
   
   const value = {
     products,
@@ -353,6 +404,9 @@ export const ProductProvider = ({ children }: { children: ReactNode }) => {
     getProductById,
     getProductsByCategory,
     getRelatedProducts,
+    addProduct,
+    updateProduct,
+    deleteProduct,
   };
 
   return <ProductContext.Provider value={value}>{children}</ProductContext.Provider>;
