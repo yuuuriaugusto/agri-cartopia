@@ -1,3 +1,4 @@
+
 import React, { useState } from "react";
 import { 
   Table, 
@@ -22,13 +23,26 @@ import {
   DialogTitle  
 } from "@/components/ui/dialog";
 import { 
+  Card,
+  CardContent
+} from "@/components/ui/card";
+import {
+  Sheet,
+  SheetContent,
+  SheetHeader,
+  SheetTitle,
+  SheetTrigger
+} from "@/components/ui/sheet";
+import { 
   MoreHorizontal, 
   Eye, 
   Search,
   FileText,
-  Truck
+  Truck,
+  Filter
 } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
+import { useIsMobile } from "@/hooks/use-mobile";
 
 // Mock data - in a real app this would come from an API
 const mockOrders = Array.from({ length: 20 }, (_, i) => ({
@@ -63,7 +77,7 @@ const OrderDetails = ({ order, onClose }: OrderDetailsProps) => {
         </Badge>
       </div>
 
-      <div className="grid gap-4 grid-cols-2">
+      <div className="grid gap-4 grid-cols-1 md:grid-cols-2">
         <div className="space-y-1">
           <p className="text-sm font-medium">Customer</p>
           <p className="text-sm">{order.customer}</p>
@@ -100,7 +114,7 @@ const OrderDetails = ({ order, onClose }: OrderDetailsProps) => {
         </div>
       </div>
 
-      <div className="flex justify-end space-x-2 pt-4">
+      <div className="flex flex-wrap justify-end space-x-2 gap-2 pt-4">
         <Button variant="outline" onClick={onClose}>Close</Button>
         <Button variant="outline">
           <FileText className="h-4 w-4 mr-2" />
@@ -117,10 +131,62 @@ const OrderDetails = ({ order, onClose }: OrderDetailsProps) => {
   );
 };
 
+// Mobile Order Card Component
+const OrderCard = ({ 
+  order, 
+  onViewOrder 
+}: { 
+  order: typeof mockOrders[0];
+  onViewOrder: (order: typeof mockOrders[0]) => void;
+}) => {
+  return (
+    <Card className="mb-4">
+      <CardContent className="pt-4">
+        <div className="flex justify-between items-start mb-2">
+          <div>
+            <h3 className="font-medium">{order.id}</h3>
+            <p className="text-sm text-muted-foreground">{order.date}</p>
+          </div>
+          <Badge variant={
+            order.status === 'Processing' ? 'default' :
+            order.status === 'Shipped' ? 'secondary' :
+            order.status === 'Delivered' ? 'secondary' : 'destructive'
+          }>
+            {order.status}
+          </Badge>
+        </div>
+        
+        <div className="flex justify-between items-center text-sm py-1">
+          <span>Customer:</span>
+          <span className="font-medium">{order.customer}</span>
+        </div>
+        
+        <div className="flex justify-between items-center text-sm py-1">
+          <span>Items:</span>
+          <span className="font-medium">{order.items}</span>
+        </div>
+        
+        <div className="flex justify-between items-center text-sm py-1">
+          <span>Total:</span>
+          <span className="font-medium">${order.total.toFixed(2)}</span>
+        </div>
+        
+        <div className="mt-3 flex justify-end">
+          <Button size="sm" variant="outline" onClick={() => onViewOrder(order)}>
+            <Eye className="h-4 w-4 mr-2" />
+            View Details
+          </Button>
+        </div>
+      </CardContent>
+    </Card>
+  );
+};
+
 const Orders = () => {
   const [searchQuery, setSearchQuery] = useState("");
   const [selectedOrder, setSelectedOrder] = useState<typeof mockOrders[0] | null>(null);
   const [isDetailsOpen, setIsDetailsOpen] = useState(false);
+  const isMobile = useIsMobile();
 
   const handleViewOrder = (order: typeof mockOrders[0]) => {
     setSelectedOrder(order);
@@ -144,74 +210,101 @@ const Orders = () => {
 
   return (
     <div className="space-y-6">
-      <h1 className="text-3xl font-bold tracking-tight">Orders</h1>
+      <h1 className="text-2xl md:text-3xl font-bold tracking-tight">Orders</h1>
       
-      <div className="relative">
-        <Search className="absolute left-2 top-2.5 h-4 w-4 text-muted-foreground" />
-        <Input
-          placeholder="Search orders by ID or customer name..."
-          className="pl-8"
-          value={searchQuery}
-          onChange={(e) => setSearchQuery(e.target.value)}
-        />
+      <div className="flex flex-col sm:flex-row gap-3">
+        <div className="relative flex-grow">
+          <Search className="absolute left-2 top-2.5 h-4 w-4 text-muted-foreground" />
+          <Input
+            placeholder="Search orders by ID or customer..."
+            className="pl-8"
+            value={searchQuery}
+            onChange={(e) => setSearchQuery(e.target.value)}
+          />
+        </div>
+        <Button variant="outline" size="icon" className="w-full sm:w-10">
+          <Filter className="h-4 w-4" />
+          <span className="sr-only">Filter</span>
+        </Button>
       </div>
       
-      <div className="rounded-md border overflow-hidden">
-        <Table>
-          <TableHeader>
-            <TableRow>
-              <TableHead>Order ID</TableHead>
-              <TableHead>Customer</TableHead>
-              <TableHead>Date</TableHead>
-              <TableHead>Total</TableHead>
-              <TableHead>Status</TableHead>
-              <TableHead>Items</TableHead>
-              <TableHead className="w-[100px]">Actions</TableHead>
-            </TableRow>
-          </TableHeader>
-          <TableBody>
-            {filteredOrders.length > 0 ? (
-              filteredOrders.map((order) => (
-                <TableRow key={order.id}>
-                  <TableCell className="font-medium">{order.id}</TableCell>
-                  <TableCell>{order.customer}</TableCell>
-                  <TableCell>{order.date}</TableCell>
-                  <TableCell>${order.total.toFixed(2)}</TableCell>
-                  <TableCell>
-                    <span className={`px-2 py-1 rounded-full text-xs font-medium ${getStatusColor(order.status)}`}>
-                      {order.status}
-                    </span>
-                  </TableCell>
-                  <TableCell>{order.items}</TableCell>
-                  <TableCell>
-                    <DropdownMenu>
-                      <DropdownMenuTrigger asChild>
-                        <Button variant="ghost" size="icon">
-                          <MoreHorizontal className="h-4 w-4" />
-                          <span className="sr-only">Actions</span>
-                        </Button>
-                      </DropdownMenuTrigger>
-                      <DropdownMenuContent align="end">
-                        <DropdownMenuItem onClick={() => handleViewOrder(order)}>
-                          <Eye className="mr-2 h-4 w-4" />
-                          View Details
-                        </DropdownMenuItem>
-                      </DropdownMenuContent>
-                    </DropdownMenu>
+      {isMobile ? (
+        // Mobile view - card list
+        <div className="space-y-4">
+          {filteredOrders.length > 0 ? (
+            filteredOrders.map((order) => (
+              <OrderCard 
+                key={order.id} 
+                order={order} 
+                onViewOrder={handleViewOrder} 
+              />
+            ))
+          ) : (
+            <div className="text-center py-8 text-muted-foreground">
+              No orders found.
+            </div>
+          )}
+        </div>
+      ) : (
+        // Desktop view - table
+        <div className="rounded-md border overflow-hidden">
+          <Table>
+            <TableHeader>
+              <TableRow>
+                <TableHead>Order ID</TableHead>
+                <TableHead>Customer</TableHead>
+                <TableHead>Date</TableHead>
+                <TableHead>Total</TableHead>
+                <TableHead>Status</TableHead>
+                <TableHead>Items</TableHead>
+                <TableHead className="w-[100px]">Actions</TableHead>
+              </TableRow>
+            </TableHeader>
+            <TableBody>
+              {filteredOrders.length > 0 ? (
+                filteredOrders.map((order) => (
+                  <TableRow key={order.id}>
+                    <TableCell className="font-medium">{order.id}</TableCell>
+                    <TableCell>{order.customer}</TableCell>
+                    <TableCell>{order.date}</TableCell>
+                    <TableCell>${order.total.toFixed(2)}</TableCell>
+                    <TableCell>
+                      <span className={`px-2 py-1 rounded-full text-xs font-medium ${getStatusColor(order.status)}`}>
+                        {order.status}
+                      </span>
+                    </TableCell>
+                    <TableCell>{order.items}</TableCell>
+                    <TableCell>
+                      <DropdownMenu>
+                        <DropdownMenuTrigger asChild>
+                          <Button variant="ghost" size="icon">
+                            <MoreHorizontal className="h-4 w-4" />
+                            <span className="sr-only">Actions</span>
+                          </Button>
+                        </DropdownMenuTrigger>
+                        <DropdownMenuContent align="end">
+                          <DropdownMenuItem onClick={() => handleViewOrder(order)}>
+                            <Eye className="mr-2 h-4 w-4" />
+                            View Details
+                          </DropdownMenuItem>
+                        </DropdownMenuContent>
+                      </DropdownMenu>
+                    </TableCell>
+                  </TableRow>
+                ))
+              ) : (
+                <TableRow>
+                  <TableCell colSpan={7} className="h-24 text-center">
+                    No orders found.
                   </TableCell>
                 </TableRow>
-              ))
-            ) : (
-              <TableRow>
-                <TableCell colSpan={7} className="h-24 text-center">
-                  No orders found.
-                </TableCell>
-              </TableRow>
-            )}
-          </TableBody>
-        </Table>
-      </div>
+              )}
+            </TableBody>
+          </Table>
+        </div>
+      )}
 
+      {/* Order Details Dialog - Used for both desktop and mobile */}
       <Dialog open={isDetailsOpen} onOpenChange={setIsDetailsOpen}>
         <DialogContent className="sm:max-w-[700px]">
           <DialogHeader>

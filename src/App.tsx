@@ -7,6 +7,7 @@ import { BrowserRouter, Routes, Route } from "react-router-dom";
 import { CartProvider } from "@/context/CartContext";
 import { ProductProvider, useProducts } from "@/context/ProductContext";
 import { useEffect } from "react";
+import { useIsMobile } from "@/hooks/use-mobile";
 import Index from "./pages/Index";
 import Products from "./pages/Products";
 import ProductDetail from "./pages/ProductDetail";
@@ -16,6 +17,7 @@ import OrderTracking from "./pages/OrderTracking";
 import NotFound from "./pages/NotFound";
 import Login from "./pages/Login";
 import AdminLayout from "./components/layout/AdminLayout";
+import MobileAdminLayout from "./components/layout/MobileAdminLayout";
 import Dashboard from "./pages/admin/Dashboard";
 import AdminProducts from "./pages/admin/Products";
 import Orders from "./pages/admin/Orders";
@@ -41,6 +43,32 @@ const ProductContextExposer = ({ children }: { children: React.ReactNode }) => {
   return <>{children}</>;
 };
 
+// Responsive Layout Selector
+const ResponsiveAdminRoutes = () => {
+  const isMobile = useIsMobile();
+  
+  return (
+    <>
+      {/* Use different layouts based on device */}
+      {isMobile ? (
+        <Route path="/admin" element={<MobileAdminLayout />}>
+          <Route path="dashboard" element={<Dashboard />} />
+          <Route path="products" element={<AdminProducts />} />
+          <Route path="orders" element={<Orders />} />
+          <Route path="customers" element={<Customers />} />
+        </Route>
+      ) : (
+        <Route path="/admin" element={<AdminLayout />}>
+          <Route path="dashboard" element={<Dashboard />} />
+          <Route path="products" element={<AdminProducts />} />
+          <Route path="orders" element={<Orders />} />
+          <Route path="customers" element={<Customers />} />
+        </Route>
+      )}
+    </>
+  );
+};
+
 const App = () => (
   <QueryClientProvider client={queryClient}>
     <ProductProvider>
@@ -60,13 +88,12 @@ const App = () => (
                 <Route path="/order-tracking" element={<OrderTracking />} />
                 <Route path="/login" element={<Login />} />
                 
-                {/* Admin Routes */}
+                {/* Admin Routes - Responsive */}
                 <Route path="/admin" element={<AdminLayout />}>
                   <Route path="dashboard" element={<Dashboard />} />
                   <Route path="products" element={<AdminProducts />} />
                   <Route path="orders" element={<Orders />} />
                   <Route path="customers" element={<Customers />} />
-                  {/* Additional admin routes can be added here */}
                 </Route>
                 
                 {/* 404 - Catch-all */}
