@@ -14,6 +14,12 @@ import Cart from "./pages/Cart";
 import Checkout from "./pages/Checkout";
 import OrderTracking from "./pages/OrderTracking";
 import NotFound from "./pages/NotFound";
+import Login from "./pages/Login";
+import AdminLayout from "./components/layout/AdminLayout";
+import Dashboard from "./pages/admin/Dashboard";
+import AdminProducts from "./pages/admin/Products";
+import Orders from "./pages/admin/Orders";
+import Customers from "./pages/admin/Customers";
 
 const queryClient = new QueryClient();
 
@@ -45,13 +51,25 @@ const App = () => (
           <BrowserRouter>
             <ProductContextExposer>
               <Routes>
+                {/* Public Routes */}
                 <Route path="/" element={<Index />} />
                 <Route path="/products" element={<Products />} />
                 <Route path="/products/:id" element={<ProductDetail />} />
                 <Route path="/cart" element={<Cart />} />
                 <Route path="/checkout" element={<Checkout />} />
                 <Route path="/order-tracking" element={<OrderTracking />} />
-                {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
+                <Route path="/login" element={<Login />} />
+                
+                {/* Admin Routes */}
+                <Route path="/admin" element={<AdminLayout />}>
+                  <Route path="dashboard" element={<Dashboard />} />
+                  <Route path="products" element={<AdminProducts />} />
+                  <Route path="orders" element={<Orders />} />
+                  <Route path="customers" element={<Customers />} />
+                  {/* Additional admin routes can be added here */}
+                </Route>
+                
+                {/* 404 - Catch-all */}
                 <Route path="*" element={<NotFound />} />
               </Routes>
             </ProductContextExposer>
