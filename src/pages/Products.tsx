@@ -1,7 +1,7 @@
 
 import { useState, useEffect } from 'react';
 import { useSearchParams } from 'react-router-dom';
-import { Filter, Sliders, ChevronDown } from 'lucide-react';
+import { Filter, Sliders, ChevronDown, Grid, ListFilter, LayoutGrid } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Badge } from '@/components/ui/badge';
@@ -28,10 +28,11 @@ import { cn } from '@/lib/utils';
 import Navbar from '@/components/layout/Navbar';
 import Footer from '@/components/layout/Footer';
 import ProductCard from '@/components/ui/product-card';
-import { useProducts, type Product } from '@/context/ProductContext';
+import { useProducts, type Product, CategoryFilter } from '@/context/ProductContext';
+import { DynamicFilter } from '@/components/products/DynamicFilter';
 
 const Products = () => {
-  const { products } = useProducts();
+  const { products, categories, categoryFilters } = useProducts();
   const [searchParams, setSearchParams] = useSearchParams();
   const isMobile = useIsMobile();
   
@@ -39,12 +40,21 @@ const Products = () => {
   const [searchTerm, setSearchTerm] = useState('');
   const [selectedCategory, setSelectedCategory] = useState<string>(searchParams.get('category') || '');
   const [sortBy, setSortBy] = useState('featured');
-  const [priceRange, setPriceRange] = useState<[number, number]>([0, 250000]);
-  const [selectedBrands, setSelectedBrands] = useState<string[]>([]);
+  const [activeCategoryFilter, setActiveCategoryFilter] = useState<CategoryFilter | null>(null);
+  const [activeFilters, setActiveFilters] = useState<Record<string, any>>({});
+  const [viewMode, setViewMode] = useState<'grid' | 'list'>('grid');
   
-  // Get unique categories and brands from products
-  const categories = Array.from(new Set(products.map(p => p.category)));
-  const brands = Array.from(new Set(products.map(p => p.brand)));
+  // Update active category filter when category changes
+  useEffect(() => {
+    if (selectedCategory) {
+      const filter = categoryFilters.find(cf => cf.category === selectedCategory);
+      setActiveCategoryFilter(filter || null);
+    } else {
+      setActiveCategoryFilter(null);
+    }
+    // Reset filters when category changes
+    setActiveFilters({});
+  }, [selectedCategory, categoryFilters]);
   
   // Filter and sort products
   useEffect(() => {
@@ -64,14 +74,36 @@ const Products = () => {
       filtered = filtered.filter(p => p.category === selectedCategory);
     }
     
-    // Filter by price range
-    filtered = filtered.filter(p => 
-      p.price >= priceRange[0] && p.price <= priceRange[1]
-    );
-    
-    // Filter by brands
-    if (selectedBrands.length > 0) {
-      filtered = filtered.filter(p => selectedBrands.includes(p.brand));
+    // Apply dynamic filters
+    if (Object.keys(activeFilters).length > 0) {
+      filtered = filtered.filter(product => {
+        for (const [key, value] of Object.entries(activeFilters)) {
+          // Skip empty filters
+          if (!value || (Array.isArray(value) && value.length === 0)) continue;
+          
+          // Handle range filters
+          if (key.endsWith('_min')) {
+            const baseKey = key.replace('_min', '');
+            const specValue = Number(product.specs[baseKey]);
+            if (isNaN(specValue) || specValue < value) return false;
+          }
+          else if (key.endsWith('_max')) {
+            const baseKey = key.replace('_max', '');
+            const specValue = Number(product.specs[baseKey]);
+            if (isNaN(specValue) || specValue > value) return false;
+          }
+          // Handle brand filter (which is a direct product property)
+          else if (key === 'brand') {
+            if (Array.isArray(value) && !value.includes(product.brand)) return false;
+          }
+          // Handle other spec-based filters
+          else if (Array.isArray(value)) {
+            const specValue = product.specs[key];
+            if (!specValue || !value.includes(specValue)) return false;
+          }
+        }
+        return true;
+      });
     }
     
     // Sort products
@@ -97,7 +129,7 @@ const Products = () => {
     }
     
     setFilteredProducts(filtered);
-  }, [products, searchTerm, selectedCategory, sortBy, priceRange, selectedBrands]);
+  }, [products, searchTerm, selectedCategory, sortBy, activeFilters]);
   
   // Update URL when category changes
   useEffect(() => {
@@ -115,23 +147,77 @@ const Products = () => {
     if (category) setSelectedCategory(category);
   }, []);
   
-  const handleBrandChange = (brand: string, checked: boolean) => {
-    if (checked) {
-      setSelectedBrands(prev => [...prev, brand]);
-    } else {
-      setSelectedBrands(prev => prev.filter(b => b !== brand));
-    }
+  const handleFilterChange = (attribute: string, value: any) => {
+    setActiveFilters(prev => ({
+      ...prev,
+      [attribute]: value
+    }));
   };
   
   const resetFilters = () => {
     setSearchTerm('');
     setSelectedCategory('');
     setSortBy('featured');
-    setPriceRange([0, 250000]);
-    setSelectedBrands([]);
+    setActiveFilters({});
   };
   
-  const FiltersContent = () => (
+  // Filter badge display
+  const getFilterBadges = () => {
+    const badges = [];
+    
+    if (selectedCategory) {
+      badges.push({
+        label: selectedCategory.replace('-', ' '),
+        onRemove: () => setSelectedCategory('')
+      });
+    }
+    
+    Object.entries(activeFilters).forEach(([key, value]) => {
+      if (!value || (Array.isArray(value) && value.length === 0)) return;
+      
+      // Skip min/max range labels - they'll be displayed as one combined badge
+      if (key.endsWith('_min') || key.endsWith('_max')) {
+        const baseKey = key.replace(/_min|_max/g, '');
+        
+        // Only add the badge if we haven't processed this range filter yet
+        if (!badges.some(b => b.key === baseKey)) {
+          const min = activeFilters[`${baseKey}_min`];
+          const max = activeFilters[`${baseKey}_max`];
+          if (min !== undefined || max !== undefined) {
+            const attribute = activeCategoryFilter?.attributes.find(a => a.name === baseKey);
+            badges.push({
+              key: baseKey,
+              label: `${baseKey}: ${min || '0'} - ${max || '∞'} ${attribute?.unit || ''}`,
+              onRemove: () => {
+                const newFilters = {...activeFilters};
+                delete newFilters[`${baseKey}_min`];
+                delete newFilters[`${baseKey}_max`];
+                setActiveFilters(newFilters);
+              }
+            });
+          }
+        }
+      } 
+      else if (Array.isArray(value)) {
+        value.forEach(v => {
+          badges.push({
+            key: `${key}-${v}`,
+            label: `${key}: ${v}`,
+            onRemove: () => {
+              setActiveFilters(prev => ({
+                ...prev,
+                [key]: prev[key].filter((item: any) => item !== v)
+              }));
+            }
+          });
+        });
+      }
+    });
+    
+    return badges;
+  };
+
+  const FilterContent = () => (
     <div className="space-y-6">
       <div>
         <h3 className="text-lg font-medium mb-3">Category</h3>
@@ -161,49 +247,16 @@ const Products = () => {
       
       <Separator />
       
-      <div>
-        <h3 className="text-lg font-medium mb-3">Price Range</h3>
-        <div className="grid grid-cols-2 gap-4">
-          <div>
-            <Label htmlFor="min-price">Min</Label>
-            <Input 
-              id="min-price" 
-              type="number" 
-              value={priceRange[0]} 
-              onChange={(e) => setPriceRange([Number(e.target.value), priceRange[1]])}
-              className="mt-1"
-            />
-          </div>
-          <div>
-            <Label htmlFor="max-price">Max</Label>
-            <Input 
-              id="max-price" 
-              type="number" 
-              value={priceRange[1]} 
-              onChange={(e) => setPriceRange([priceRange[0], Number(e.target.value)])}
-              className="mt-1"
-            />
-          </div>
+      {activeCategoryFilter && (
+        <div className="space-y-4">
+          <h3 className="text-lg font-medium">Dynamic Filters</h3>
+          <DynamicFilter 
+            categoryFilter={activeCategoryFilter}
+            onFilterChange={handleFilterChange}
+            activeFilters={activeFilters}
+          />
         </div>
-      </div>
-      
-      <Separator />
-      
-      <div>
-        <h3 className="text-lg font-medium mb-3">Brand</h3>
-        <div className="space-y-2">
-          {brands.map((brand) => (
-            <div key={brand} className="flex items-center gap-2">
-              <Checkbox 
-                id={`brand-${brand}`} 
-                checked={selectedBrands.includes(brand)} 
-                onCheckedChange={(checked) => handleBrandChange(brand, checked === true)}
-              />
-              <Label htmlFor={`brand-${brand}`}>{brand}</Label>
-            </div>
-          ))}
-        </div>
-      </div>
+      )}
       
       <div className="pt-4">
         <Button onClick={resetFilters} variant="outline" className="w-full">
@@ -255,6 +308,27 @@ const Products = () => {
                 </SelectContent>
               </Select>
               
+              {!isMobile && (
+                <div className="flex border rounded-md">
+                  <Button
+                    variant={viewMode === 'grid' ? 'default' : 'ghost'}
+                    size="icon"
+                    onClick={() => setViewMode('grid')}
+                    className="rounded-r-none"
+                  >
+                    <LayoutGrid className="h-4 w-4" />
+                  </Button>
+                  <Button
+                    variant={viewMode === 'list' ? 'default' : 'ghost'}
+                    size="icon"
+                    onClick={() => setViewMode('list')}
+                    className="rounded-l-none"
+                  >
+                    <ListFilter className="h-4 w-4" />
+                  </Button>
+                </div>
+              )}
+              
               {isMobile ? (
                 <Sheet>
                   <SheetTrigger asChild>
@@ -267,7 +341,7 @@ const Products = () => {
                       <SheetTitle>Filters</SheetTitle>
                     </SheetHeader>
                     <div className="py-4">
-                      <FiltersContent />
+                      <FilterContent />
                     </div>
                     <div className="absolute bottom-0 left-0 right-0 p-4 bg-background border-t">
                       <SheetClose asChild>
@@ -296,54 +370,37 @@ const Products = () => {
                   <h2 className="text-xl font-medium mb-4 flex items-center gap-2">
                     <Filter className="h-5 w-5" /> Filters
                   </h2>
-                  <FiltersContent />
+                  <FilterContent />
                 </div>
               </div>
             )}
             
-            {/* Product Grid */}
+            {/* Product Grid/List */}
             <div className="flex-grow">
               <div className="flex flex-wrap items-center gap-2 mb-6">
                 <span className="text-sm text-muted-foreground">
                   {filteredProducts.length} products found
                 </span>
                 
-                {selectedCategory && (
+                {getFilterBadges().map((badge) => (
                   <Badge 
+                    key={badge.key || badge.label}
                     variant="secondary" 
                     className="flex items-center gap-1 capitalize"
                   >
-                    {selectedCategory.replace('-', ' ')}
+                    {badge.label}
                     <Button 
                       variant="ghost" 
                       size="icon" 
                       className="h-4 w-4 rounded-full"
-                      onClick={() => setSelectedCategory('')}
-                    >
-                      <ChevronDown className="h-3 w-3" />
-                    </Button>
-                  </Badge>
-                )}
-                
-                {selectedBrands.map(brand => (
-                  <Badge 
-                    key={brand}
-                    variant="secondary" 
-                    className="flex items-center gap-1"
-                  >
-                    {brand}
-                    <Button 
-                      variant="ghost" 
-                      size="icon" 
-                      className="h-4 w-4 rounded-full"
-                      onClick={() => handleBrandChange(brand, false)}
+                      onClick={badge.onRemove}
                     >
                       <ChevronDown className="h-3 w-3" />
                     </Button>
                   </Badge>
                 ))}
                 
-                {(selectedCategory || selectedBrands.length > 0 || searchTerm) && (
+                {(selectedCategory || Object.keys(activeFilters).length > 0 || searchTerm) && (
                   <Button 
                     variant="ghost" 
                     size="sm" 
@@ -356,11 +413,50 @@ const Products = () => {
               </div>
               
               {filteredProducts.length > 0 ? (
-                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
-                  {filteredProducts.map((product) => (
-                    <ProductCard key={product.id} product={product} />
-                  ))}
-                </div>
+                viewMode === 'grid' ? (
+                  <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+                    {filteredProducts.map((product) => (
+                      <ProductCard key={product.id} product={product} />
+                    ))}
+                  </div>
+                ) : (
+                  <div className="space-y-4">
+                    {filteredProducts.map((product) => (
+                      <div key={product.id} className="flex flex-col sm:flex-row border rounded-lg overflow-hidden bg-card hover:shadow-md transition-shadow">
+                        <div className="w-full sm:w-1/3 h-48 sm:h-auto relative">
+                          <img 
+                            src={product.images[0]} 
+                            alt={product.name}
+                            className="absolute inset-0 w-full h-full object-cover"
+                          />
+                        </div>
+                        <div className="p-4 flex flex-col flex-grow">
+                          <h3 className="text-lg font-medium mb-2">{product.name}</h3>
+                          <p className="text-muted-foreground text-sm line-clamp-2 mb-4">
+                            {product.description}
+                          </p>
+                          <div className="flex flex-wrap gap-2 mb-4">
+                            {product.features.slice(0, 3).map((feature, i) => (
+                              <Badge key={i} variant="outline">{feature}</Badge>
+                            ))}
+                            {product.features.length > 3 && (
+                              <Badge variant="outline">+{product.features.length - 3} more</Badge>
+                            )}
+                          </div>
+                          <div className="mt-auto flex items-end justify-between">
+                            <div>
+                              <div className="text-xl font-bold">${product.price.toLocaleString()}</div>
+                              <div className="text-sm text-muted-foreground">Brand: {product.brand}</div>
+                            </div>
+                            <Button asChild>
+                              <a href={`/products/${product.id}`}>View Details</a>
+                            </Button>
+                          </div>
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+                )
               ) : (
                 <div className="text-center py-12">
                   <h3 className="text-xl font-medium mb-2">No products found</h3>

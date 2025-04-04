@@ -1,5 +1,5 @@
 
-import { createContext, useContext, ReactNode, useState } from 'react';
+import { createContext, useContext, ReactNode, useState, useMemo } from 'react';
 
 // Types
 export interface Product {
@@ -21,12 +21,29 @@ export interface Product {
   discount?: number;
 }
 
+export interface CategoryAttribute {
+  name: string;
+  type: 'text' | 'number' | 'range' | 'select';
+  options?: string[]; // For select type
+  min?: number; // For range type
+  max?: number; // For range type
+  unit?: string; // For range type with units (e.g., km, hours)
+}
+
+export interface CategoryFilter {
+  category: string;
+  attributes: CategoryAttribute[];
+}
+
 interface ProductContextType {
   products: Product[];
   featuredProducts: Product[];
   getProductById: (id: string) => Product | undefined;
   getProductsByCategory: (category: string) => Product[];
   getRelatedProducts: (id: string, limit?: number) => Product[];
+  // Category and filter related
+  categories: string[];
+  categoryFilters: CategoryFilter[];
   // CRUD operations
   addProduct: (product: Omit<Product, "id">) => string;
   updateProduct: (id: string, updates: Partial<Product>) => boolean;
@@ -331,6 +348,89 @@ export const ProductProvider = ({ children }: { children: ReactNode }) => {
   // Get featured products
   const featuredProducts = products.filter(product => product.isFeatured);
   
+  // Extract unique categories
+  const categories = useMemo(() => 
+    Array.from(new Set(products.map(p => p.category))), 
+    [products]
+  );
+  
+  // Generate dynamic category filters based on product specs
+  const categoryFilters = useMemo(() => {
+    const filters: CategoryFilter[] = [];
+    
+    // Process each category
+    categories.forEach(category => {
+      const categoryProducts = products.filter(p => p.category === category);
+      const allSpecs = new Set<string>();
+      
+      // Collect all unique spec keys for this category
+      categoryProducts.forEach(product => {
+        Object.keys(product.specs).forEach(key => allSpecs.add(key));
+      });
+      
+      // Create attributes for each spec
+      const attributes: CategoryAttribute[] = [];
+      
+      // Add common attributes (always present)
+      attributes.push({
+        name: 'brand',
+        type: 'select',
+        options: Array.from(new Set(categoryProducts.map(p => p.brand)))
+      });
+      
+      // Process specific specs for this category
+      allSpecs.forEach(specKey => {
+        // Determine the type of this attribute based on values
+        const values = categoryProducts
+          .map(p => p.specs[specKey])
+          .filter(Boolean);
+        
+        if (values.length === 0) return;
+        
+        // Check if all values are numbers
+        const allNumbers = values.every(v => !isNaN(Number(v)));
+        
+        if (allNumbers) {
+          // It's a numeric attribute
+          const numbers = values.map(v => Number(v));
+          attributes.push({
+            name: specKey,
+            type: 'range',
+            min: Math.min(...numbers),
+            max: Math.max(...numbers),
+            unit: determineUnit(specKey)
+          });
+        } else {
+          // It's a categorical attribute
+          attributes.push({
+            name: specKey,
+            type: 'select',
+            options: Array.from(new Set(values))
+          });
+        }
+      });
+      
+      filters.push({
+        category,
+        attributes
+      });
+    });
+    
+    return filters;
+  }, [categories, products]);
+  
+  // Helper function to determine unit type based on spec name
+  function determineUnit(specName: string): string {
+    const lowerName = specName.toLowerCase();
+    if (lowerName.includes('horsepower')) return 'HP';
+    if (lowerName.includes('weight')) return 'kg';
+    if (lowerName.includes('capacity')) return 'L';
+    if (lowerName.includes('hours')) return 'hrs';
+    if (lowerName.includes('year')) return '';
+    if (lowerName.includes('mileage') || lowerName.includes('odometer')) return 'km';
+    return '';
+  }
+  
   // Get product by ID
   const getProductById = (id: string) => {
     return products.find(product => product.id === id);
@@ -404,6 +504,8 @@ export const ProductProvider = ({ children }: { children: ReactNode }) => {
     getProductById,
     getProductsByCategory,
     getRelatedProducts,
+    categories,
+    categoryFilters,
     addProduct,
     updateProduct,
     deleteProduct,
