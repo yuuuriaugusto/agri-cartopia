@@ -16,6 +16,7 @@ import Checkout from "./pages/Checkout";
 import OrderTracking from "./pages/OrderTracking";
 import NotFound from "./pages/NotFound";
 import Login from "./pages/Login";
+import Testimonials from "./pages/Testimonials";
 import AdminLayout from "./components/layout/AdminLayout";
 import MobileAdminLayout from "./components/layout/MobileAdminLayout";
 import Dashboard from "./pages/admin/Dashboard";
@@ -64,6 +65,7 @@ const App = () => {
                   <Route path="/checkout" element={<Checkout />} />
                   <Route path="/order-tracking" element={<OrderTracking />} />
                   <Route path="/login" element={<Login />} />
+                  <Route path="/testimonials" element={<Testimonials />} />
                   
                   {/* Admin Routes - Conditionally render based on device */}
                   {isMobile ? (

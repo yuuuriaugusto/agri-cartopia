@@ -1,4 +1,3 @@
-
 import { useState, useEffect } from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import { cn } from '@/lib/utils';
@@ -32,6 +31,7 @@ const Navbar = () => {
     { name: 'Products', path: '/products' },
     { name: 'Farm Machinery', path: '/products?category=farm-machinery' },
     { name: 'Vehicles', path: '/products?category=vehicles' },
+    { name: 'Testimonials', path: '/testimonials' },
     { name: 'About', path: '/about' },
     { name: 'Contact', path: '/contact' },
   ];
@@ -46,7 +46,6 @@ const Navbar = () => {
       )}
     >
       <div className="container flex items-center justify-between">
-        {/* Logo */}
         <Link 
           to="/" 
           className="flex items-center gap-2 font-serif text-xl font-semibold"
@@ -60,7 +59,6 @@ const Navbar = () => {
           </span>
         </Link>
 
-        {/* Desktop Navigation */}
         <nav className="hidden md:flex items-center space-x-1">
           {navLinks.map((link) => (
             <Link
@@ -80,7 +78,6 @@ const Navbar = () => {
           ))}
         </nav>
 
-        {/* Action Buttons */}
         <div className="flex items-center gap-2">
           <Button 
             variant="ghost" 
@@ -123,7 +120,6 @@ const Navbar = () => {
             </Button>
           </Link>
           
-          {/* Mobile Menu Button */}
           <Button
             variant="ghost"
             size="icon"
@@ -139,7 +135,6 @@ const Navbar = () => {
         </div>
       </div>
 
-      {/* Mobile Navigation Menu */}
       {isMobile && (
         <div
           className={cn(
