@@ -78,7 +78,8 @@ const ProductGridItem = ({ product }: { product: Product }) => {
         <div className="flex items-center justify-between mb-1">
           <span className="text-sm font-medium flex items-center gap-1">
             <MapPin className="h-3.5 w-3.5 text-muted-foreground" />
-            {product.location || "Not specified"}
+            {/* Using subcategory as location since 'location' doesn't exist */}
+            {product.subcategory || "Not specified"}
           </span>
           <div className="flex items-center text-amber-500">
             <Star className="h-4 w-4 fill-current" />
