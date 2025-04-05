@@ -125,13 +125,13 @@ export const ptBR = {
   'footer.newsletterText': 'Junte-se à nossa newsletter para receber as últimas atualizações sobre produtos, promoções e insights agrícolas.',
   'footer.emailPlaceholder': 'Seu endereço de email',
   'footer.companyInfo': 'Fornecedor de equipamentos agrícolas premium ajudando agricultores a aumentar eficiência e sustentabilidade desde 2008.',
-  'contact.address.content': 'Rua da Fazenda, 123, Distrito Agrícola, Brasil',
   
   // Página de Contato
   'contact.title': 'Entre em',
   'contact.titleHighlight': 'Contato',
   'contact.subtitle': 'Entre em contato com nossa equipe para qualquer dúvida ou assistência',
   'contact.address.title': 'Endereço',
+  'contact.address.content': 'Rua da Fazenda, 123, Distrito Agrícola, Brasil',
   'contact.phone.title': 'Telefone',
   'contact.email.title': 'Email',
   'contact.hours.title': 'Horário de Funcionamento',

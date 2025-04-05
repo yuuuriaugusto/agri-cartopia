@@ -4,6 +4,7 @@ import { Button } from '@/components/ui/button';
 import { cn } from '@/lib/utils';
 import { useCart } from '@/context/CartContext';
 import { type Product } from '@/context/ProductContext';
+import { useTranslation } from '@/hooks/use-translation';
 
 interface AddToCartButtonProps {
   product: Product;
@@ -23,6 +24,7 @@ const AddToCartButton = ({
   className 
 }: AddToCartButtonProps) => {
   const { addItem } = useCart();
+  const { t } = useTranslation();
   
   const handleAddToCart = () => {
     addItem({
@@ -49,7 +51,7 @@ const AddToCartButton = ({
         "h-4 w-4 transition-transform group-hover:scale-110",
         showText ? "mr-2" : ""
       )} />
-      {showText && "Add to Cart"}
+      {showText && t('common.cart')}
     </Button>
   );
 };

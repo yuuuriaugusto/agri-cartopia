@@ -125,13 +125,13 @@ export const en = {
   'footer.newsletterText': 'Join our newsletter for the latest updates on products, promotions, and agricultural insights.',
   'footer.emailPlaceholder': 'Your email address',
   'footer.companyInfo': 'Premium agricultural equipment provider helping farmers increase efficiency and sustainability since 2008.',
-  'contact.address.content': '123 Farm Road, Agricultural District, Country',
   
   // Contact page
   'contact.title': 'Contact',
   'contact.titleHighlight': 'Us',
   'contact.subtitle': 'Get in touch with our team for any inquiries or assistance',
   'contact.address.title': 'Address',
+  'contact.address.content': '123 Farm Road, Agricultural District, Country',
   'contact.phone.title': 'Phone',
   'contact.email.title': 'Email',
   'contact.hours.title': 'Business Hours',
