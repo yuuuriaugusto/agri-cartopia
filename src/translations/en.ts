@@ -11,6 +11,26 @@ export const en = {
   'navbar.darkMode': 'Dark Mode',
   'navbar.lightMode': 'Light Mode',
 
+  // Common elements
+  'common.home': 'Home',
+  'common.products': 'Products',
+  'common.testimonials': 'Testimonials',
+  'common.about': 'About Us',
+  'common.contact': 'Contact',
+  'common.search': 'Search',
+  'common.language': 'Language',
+  'common.theme': 'Theme',
+  'common.account': 'Account',
+  'common.cart': 'Cart',
+  'common.close': 'Close',
+  'common.menu': 'Menu',
+  'common.subscribe': 'Subscribe',
+  'common.copyright': '© 2025 AgriCartopia. All rights reserved.',
+  'common.termsAndConditions': 'Terms & Conditions',
+  'common.privacyPolicy': 'Privacy Policy',
+  'common.farmMachinery': 'Farm Machinery',
+  'common.vehicles': 'Vehicles',
+
   // Home Page Translation
   'home.hero.badge': 'Premium Agricultural Equipment',
   'home.hero.title1': 'Precision Agricultural Machinery',
@@ -59,7 +79,7 @@ export const en = {
   
   'about.ourStory.title': 'Our Story',
   'about.ourStory.paragraph1': 'Founded in 2008, AgriCartopia was born from a passion for improving the agricultural sector through quality equipment and innovation. What started as a small family business grew to become a trusted leader in complete agricultural solutions.',
-  'about.ourStory.paragraph2': 'Throughout the years, we've dedicated ourselves to understanding the evolving needs of modern farmers. Our journey has been guided by an unwavering commitment to quality, sustainability, and support for the farming community.',
+  'about.ourStory.paragraph2': 'Throughout the years, we have dedicated ourselves to understanding the evolving needs of modern farmers. Our journey has been guided by an unwavering commitment to quality, sustainability, and support for the farming community.',
   'about.ourStory.paragraph3': 'Today, AgriCartopia serves customers nationwide, providing machinery, implements, and vehicles that make a real difference in day-to-day farming operations.',
   'about.ourStory.imageAlt': 'AgriCartopia team at a farm',
   'about.ourStory.yearsExperience': 'Years Experience',
@@ -79,7 +99,7 @@ export const en = {
   'about.ourTeam.roles.cto': 'Chief Technology Officer',
   'about.ourTeam.roles.salesDirector': 'Sales Director',
 
-  // Add more translations here
+  // Footer translations
   'footer.customerService': 'Customer Service',
   'footer.about': 'About Us',
   'footer.careers': 'Careers',
@@ -99,4 +119,11 @@ export const en = {
   'footer.newsletter': 'Subscribe to our newsletter',
   'footer.subscribe': 'Subscribe',
   'footer.rights': '© 2025 AgriCartopia. All rights reserved.',
+  'footer.quickLinks': 'Quick Links',
+  'footer.productCategories': 'Product Categories',
+  'footer.stayUpdated': 'Stay Updated',
+  'footer.newsletterText': 'Join our newsletter for the latest updates on products, promotions, and agricultural insights.',
+  'footer.emailPlaceholder': 'Your email address',
+  'footer.companyInfo': 'Premium agricultural equipment provider helping farmers increase efficiency and sustainability since 2008.',
+  'contact.address.content': '123 Farm Road, Agricultural District, Country',
 };

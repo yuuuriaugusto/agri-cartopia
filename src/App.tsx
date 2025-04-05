@@ -10,7 +10,7 @@ import { ThemeProvider } from "@/contexto/ContextoTema";
 import { TranslationProvider } from "@/contexto/ContextoTraducao";
 import { useEffect } from "react";
 import { useIsMobile } from "@/hooks/use-mobile";
-import Index from "./pages/Indice";
+import Indice from "./pages/Indice";
 import Products from "./pages/Products";
 import ProductDetail from "./pages/ProductDetail";
 import Cart from "./pages/Cart";
@@ -64,7 +64,7 @@ const App = () => {
                   <ExpositorContextoProdutos>
                     <Routes>
                       {/* Rotas Públicas */}
-                      <Route path="/" element={<Index />} />
+                      <Route path="/" element={<Indice />} />
                       <Route path="/produtos" element={<Products />} />
                       <Route path="/produtos/:id" element={<ProductDetail />} />
                       <Route path="/carrinho" element={<Cart />} />

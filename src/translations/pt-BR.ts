@@ -11,6 +11,26 @@ export const ptBR = {
   'navbar.darkMode': 'Modo Escuro',
   'navbar.lightMode': 'Modo Claro',
 
+  // Elementos comuns
+  'common.home': 'Início',
+  'common.products': 'Produtos',
+  'common.testimonials': 'Depoimentos',
+  'common.about': 'Sobre Nós',
+  'common.contact': 'Contato',
+  'common.search': 'Buscar',
+  'common.language': 'Idioma',
+  'common.theme': 'Tema',
+  'common.account': 'Conta',
+  'common.cart': 'Carrinho',
+  'common.close': 'Fechar',
+  'common.menu': 'Menu',
+  'common.subscribe': 'Inscrever-se',
+  'common.copyright': '© 2025 AgriCartopia. Todos os direitos reservados.',
+  'common.termsAndConditions': 'Termos & Condições',
+  'common.privacyPolicy': 'Política de Privacidade',
+  'common.farmMachinery': 'Maquinário Agrícola',
+  'common.vehicles': 'Veículos',
+
   // Tradução da Página Inicial
   'home.hero.badge': 'Equipamentos Agrícolas Premium',
   'home.hero.title1': 'Maquinário Agrícola de Precisão',
@@ -79,7 +99,7 @@ export const ptBR = {
   'about.ourTeam.roles.cto': 'Diretora de Tecnologia',
   'about.ourTeam.roles.salesDirector': 'Diretor de Vendas',
 
-  // Adicione mais traduções aqui
+  // Traduções do Rodapé
   'footer.customerService': 'Atendimento ao Cliente',
   'footer.about': 'Sobre Nós',
   'footer.careers': 'Carreiras',
@@ -99,4 +119,11 @@ export const ptBR = {
   'footer.newsletter': 'Inscreva-se em nossa newsletter',
   'footer.subscribe': 'Inscrever',
   'footer.rights': '© 2025 AgriCartopia. Todos os direitos reservados.',
+  'footer.quickLinks': 'Links Rápidos',
+  'footer.productCategories': 'Categorias de Produtos',
+  'footer.stayUpdated': 'Fique Atualizado',
+  'footer.newsletterText': 'Junte-se à nossa newsletter para receber as últimas atualizações sobre produtos, promoções e insights agrícolas.',
+  'footer.emailPlaceholder': 'Seu endereço de email',
+  'footer.companyInfo': 'Fornecedor de equipamentos agrícolas premium ajudando agricultores a aumentar eficiência e sustentabilidade desde 2008.',
+  'contact.address.content': 'Rua da Fazenda, 123, Distrito Agrícola, Brasil',
 };
