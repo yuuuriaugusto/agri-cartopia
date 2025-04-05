@@ -10,7 +10,7 @@ import { ThemeProvider } from "@/contexto/ContextoTema";
 import { TranslationProvider } from "@/contexto/ContextoTraducao";
 import { useEffect } from "react";
 import { useIsMobile } from "@/hooks/use-mobile";
-import Index from "./pages/Index";
+import Index from "./pages/Indice";
 import Products from "./pages/Products";
 import ProductDetail from "./pages/ProductDetail";
 import Cart from "./pages/Cart";

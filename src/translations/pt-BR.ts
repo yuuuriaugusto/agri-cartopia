@@ -1,184 +1,102 @@
 
 export const ptBR = {
-  // Comum
-  common: {
-    home: 'Início',
-    products: 'Produtos',
-    farmMachinery: 'Maquinário Agrícola',
-    vehicles: 'Veículos',
-    testimonials: 'Depoimentos',
-    about: 'Sobre',
-    contact: 'Contato',
-    search: 'Buscar',
-    account: 'Conta',
-    cart: 'Carrinho',
-    language: 'Idioma',
-    theme: 'Tema',
-    lightMode: 'Modo Claro',
-    darkMode: 'Modo Escuro',
-    loading: 'Carregando...',
-    viewAll: 'Ver Todos',
-    moreInfo: 'Mais Informações',
-    addToCart: 'Adicionar ao Carrinho',
-    buyNow: 'Comprar Agora',
-    outOfStock: 'Fora de Estoque',
-    filter: 'Filtrar',
-    sort: 'Ordenar',
-    price: 'Preço',
-    category: 'Categoria',
-    brand: 'Marca',
-    apply: 'Aplicar',
-    reset: 'Redefinir',
-    submit: 'Enviar',
-    subscribe: 'Inscrever-se',
-    termsAndConditions: 'Termos e Condições',
-    privacyPolicy: 'Política de Privacidade',
-    copyright: '© 2025 AgriCartopia. Todos os direitos reservados.',
-  },
+  // Tradução do Cabeçalho
+  'navbar.products': 'Produtos',
+  'navbar.testimonials': 'Depoimentos',
+  'navbar.about': 'Sobre',
+  'navbar.contact': 'Contato',
+  'navbar.cart': 'Carrinho',
+  'navbar.login': 'Entrar',
+  'navbar.search': 'Buscar...',
+  'navbar.darkMode': 'Modo Escuro',
+  'navbar.lightMode': 'Modo Claro',
+
+  // Tradução da Página Inicial
+  'home.hero.badge': 'Equipamentos Agrícolas Premium',
+  'home.hero.title1': 'Maquinário Agrícola de Precisão',
+  'home.hero.title2': 'Veículos e Transporte Agrícola',
+  'home.hero.title3': 'Soluções Completas para Agricultura',
+  'home.hero.subtitle1': 'Equipamentos de ponta para agricultura moderna',
+  'home.hero.subtitle2': 'Soluções confiáveis para logística agrícola',
+  'home.hero.subtitle3': 'Tudo o que você precisa para uma agricultura de sucesso',
+  'home.hero.browseProducts': 'Ver Produtos',
+  'home.hero.contactSales': 'Falar com Vendas',
   
-  // Barra de Navegação
-  navbar: {
-    searchPlaceholder: 'Buscar produtos...',
-  },
+  // Tradução das Categorias
+  'home.categories.title': 'Categorias de Produtos',
+  'home.categories.subtitle': 'Descubra nossa variedade completa de maquinário e equipamentos agrícolas, projetados para aumentar a produtividade e eficiência nas operações agrícolas.',
+  'home.categories.farmMachinery': 'Maquinário Agrícola',
+  'home.categories.irrigation': 'Sistemas de Irrigação',
+  'home.categories.vehicles': 'Veículos',
+  'home.categories.implements': 'Implementos',
+  'home.categories.explore': 'Explorar nossa seleção',
   
-  // Rodapé
-  footer: {
-    companyInfo: 'Seu parceiro confiável para maquinário agrícola, veículos e implementos de alta qualidade. Atendendo agricultores e empresas desde 2010.',
-    quickLinks: 'Links Rápidos',
-    productCategories: 'Categorias de Produtos',
-    stayUpdated: 'Mantenha-se Atualizado',
-    newsletterText: 'Inscreva-se em nossa newsletter para receber os últimos produtos e ofertas especiais.',
-    emailPlaceholder: 'Seu email',
-  },
+  // Tradução de Produtos em Destaque
+  'home.featuredProducts.title': 'Produtos Premium',
+  'home.features.title': 'Por que nos escolher',
+  'home.features.subtitle': 'Na AgriCartopia, fornecemos maquinário e implementos agrícolas de alta qualidade, projetados para aumentar produtividade, eficiência e sustentabilidade nas operações agrícolas modernas.',
+  'home.features.machinery': 'Maquinário de Alta Qualidade',
+  'home.features.machineryDesc': 'Equipamentos premium de fabricantes confiáveis',
+  'home.features.warranty': 'Garantia Estendida',
+  'home.features.warrantyDesc': 'Cobertura abrangente para sua tranquilidade',
+  'home.features.maintenance': 'Manutenção Especializada',
+  'home.features.maintenanceDesc': 'Serviço e suporte profissional',
+  'home.features.delivery': 'Entrega Rápida',
+  'home.features.deliveryDesc': 'Envio rápido e confiável para todo o país',
+  'home.features.viewProducts': 'Ver Todos os Produtos',
   
-  // Página Inicial
-  home: {
-    heroTitle: 'Equipamentos Agrícolas de Alta Qualidade',
-    heroSubtitle: 'Soluções agrícolas inovadoras para potencializar sua produtividade',
-    heroButton: 'Explorar Produtos',
-    featuredProductsTitle: 'Produtos em Destaque',
-    featuredProductsSubtitle: 'Descubra nossa seleção de equipamentos agrícolas de alta qualidade',
-    categoriesTitle: 'Categorias',
-    categoriesSubtitle: 'Explore nossa ampla gama de categorias de produtos',
-    testimonialsTitle: 'O que nossos clientes dizem',
-    testimonialsSubtitle: 'Depoimentos de agricultores satisfeitos',
-    partnersTitle: 'Nossos Parceiros',
-    partnersSubtitle: 'Trabalhamos com as melhores marcas da indústria',
-  },
-  
+  // CTA da Página Inicial
+  'home.cta.badge': 'Comece Hoje',
+  'home.cta.title': 'Pronto para Atualizar seu Equipamento Agrícola?',
+  'home.cta.subtitle': 'Explore nosso extenso catálogo de maquinário agrícola premium, veículos e implementos. Nossos especialistas estão prontos para ajudá-lo a encontrar as soluções perfeitas.',
+  'home.cta.shopNow': 'Comprar Agora',
+  'home.cta.contactUs': 'Fale Conosco',
+
   // Página Sobre
-  about: {
-    title: 'Sobre a',
-    titleHighlight: 'AgriCartopia',
-    subtitle: 'Conheça nossa história, valores e equipe dedicada à inovação agrícola.',
-    ourStory: {
-      title: 'Nossa História',
-      paragraph1: 'Fundada em 2010, a AgriCartopia nasceu da paixão pela agricultura e da visão de fornecer soluções inovadoras para agricultores e empresas agrícolas.',
-      paragraph2: 'Ao longo dos anos, expandimos nossa oferta de produtos e estabelecemos parcerias com os principais fabricantes de equipamentos agrícolas do mundo, sempre mantendo nosso compromisso com a qualidade e o atendimento ao cliente.',
-      paragraph3: 'Hoje, somos reconhecidos como líderes no fornecimento de maquinário agrícola, veículos e implementos de alta qualidade, atendendo clientes em todo o Brasil e na América Latina.',
-      imageAlt: 'Equipe da AgriCartopia trabalhando',
-      yearsExperience: 'Anos de Experiência',
-    },
-    ourValues: {
-      title: 'Nossos Valores',
-      sustainable: {
-        title: 'Sustentabilidade',
-        description: 'Promovemos práticas agrícolas sustentáveis e equipamentos eco-friendly.',
-      },
-      quality: {
-        title: 'Qualidade',
-        description: 'Comprometidos com produtos duráveis e de alto desempenho.',
-      },
-      community: {
-        title: 'Comunidade',
-        description: 'Apoiamos agricultores locais e construímos relacionamentos duradouros.',
-      },
-      innovation: {
-        title: 'Inovação',
-        description: 'Constantemente buscando novas tecnologias para melhorar a agricultura.',
-      },
-    },
-    ourTeam: {
-      title: 'Nossa Equipe',
-      roles: {
-        ceo: 'CEO & Fundador',
-        cto: 'Diretora de Tecnologia',
-        salesDirector: 'Diretor de Vendas',
-      },
-    },
-  },
+  'about.title': 'Sobre a',
+  'about.titleHighlight': 'AgriCartopia',
+  'about.subtitle': 'Fornecendo equipamentos agrícolas de qualidade desde 2008',
   
-  // Página de Contato
-  contact: {
-    title: 'Entre em',
-    titleHighlight: 'Contato',
-    subtitle: 'Estamos aqui para responder suas perguntas e ajudá-lo a encontrar as melhores soluções para suas necessidades agrícolas.',
-    address: {
-      title: 'Endereço',
-      content: 'Rua da Fazenda, 123, Agrovila, AG 12345'
-    },
-    phone: {
-      title: 'Telefone'
-    },
-    email: {
-      title: 'Email'
-    },
-    hours: {
-      title: 'Horário de Funcionamento',
-      content: 'Segunda a Sexta: 8h às 18h\nSábado: 9h às 13h'
-    },
-    form: {
-      title: 'Envie uma Mensagem',
-      nameLabel: 'Nome',
-      namePlaceholder: 'Seu nome completo',
-      emailLabel: 'Email',
-      emailPlaceholder: 'seu.email@exemplo.com',
-      subjectLabel: 'Assunto',
-      subjectPlaceholder: 'Como podemos ajudar?',
-      messageLabel: 'Mensagem',
-      messagePlaceholder: 'Digite sua mensagem aqui...',
-      submit: 'Enviar Mensagem',
-      submitting: 'Enviando...',
-      successTitle: 'Mensagem Enviada!',
-      successMessage: 'Agradecemos seu contato. Retornaremos em breve.'
-    },
-    map: {
-      title: 'Localização da AgriCartopia'
-    }
-  },
+  'about.ourStory.title': 'Nossa História',
+  'about.ourStory.paragraph1': 'Fundada em 2008, a AgriCartopia nasceu da paixão por melhorar o setor agrícola através de equipamentos de qualidade e inovação. O que começou como uma pequena empresa familiar cresceu para se tornar um líder confiável em soluções agrícolas completas.',
+  'about.ourStory.paragraph2': 'Ao longo dos anos, nos dedicamos a entender as necessidades em constante evolução dos agricultores modernos. Nossa jornada tem sido guiada por um compromisso inabalável com a qualidade, sustentabilidade e apoio à comunidade agrícola.',
+  'about.ourStory.paragraph3': 'Hoje, a AgriCartopia atende clientes em todo o Brasil, fornecendo maquinário, implementos e veículos que fazem a diferença real nas operações agrícolas diárias.',
+  'about.ourStory.imageAlt': 'Equipe da AgriCartopia em uma fazenda',
+  'about.ourStory.yearsExperience': 'Anos de Experiência',
   
-  // Página de Depoimentos
-  testimonials: {
-    title: 'Depoimentos de',
-    titleHighlight: 'Clientes',
-    subtitle: 'Veja o que nossos clientes têm a dizer sobre sua experiência com os produtos e serviços da AgriCartopia.',
-    submitYours: 'Compartilhe Sua Experiência',
-    submitText: 'Valorizamos seu feedback. Se você deseja compartilhar sua experiência com nossos produtos, entre em contato com nossa equipe de atendimento ao cliente.',
-    submitButton: 'Enviar Seu Depoimento'
-  },
+  'about.ourValues.title': 'Nossos Valores',
+  'about.ourValues.sustainable.title': 'Sustentabilidade',
+  'about.ourValues.sustainable.description': 'Comprometidos com práticas agrícolas ecologicamente responsáveis e equipamentos eficientes.',
+  'about.ourValues.quality.title': 'Qualidade',
+  'about.ourValues.quality.description': 'Selecionamos apenas os melhores produtos que garantem durabilidade e desempenho.',
+  'about.ourValues.community.title': 'Comunidade',
+  'about.ourValues.community.description': 'Apoiamos os agricultores locais e contribuímos para o desenvolvimento rural.',
+  'about.ourValues.innovation.title': 'Inovação',
+  'about.ourValues.innovation.description': 'Constantemente buscando novas tecnologias para melhorar a eficiência agrícola.',
   
-  // Página de Produtos
-  products: {
-    title: 'Nossos',
-    titleHighlight: 'Produtos',
-    subtitle: 'Explore nossa ampla seleção de equipamentos agrícolas de alta qualidade.',
-    filters: {
-      title: 'Filtros',
-      price: 'Preço',
-      category: 'Categoria',
-      brand: 'Marca',
-      apply: 'Aplicar Filtros',
-      reset: 'Limpar Filtros',
-      sortBy: 'Ordenar por',
-      sortOptions: {
-        newest: 'Mais Recentes',
-        priceAsc: 'Preço: Menor para Maior',
-        priceDesc: 'Preço: Maior para Menor',
-        popularity: 'Popularidade'
-      }
-    },
-    notFound: 'Nenhum produto encontrado. Tente ajustar seus filtros.',
-    inStock: 'Em Estoque',
-    outOfStock: 'Fora de Estoque'
-  }
+  'about.ourTeam.title': 'Nossa Equipe',
+  'about.ourTeam.roles.ceo': 'CEO e Fundador',
+  'about.ourTeam.roles.cto': 'Diretora de Tecnologia',
+  'about.ourTeam.roles.salesDirector': 'Diretor de Vendas',
+
+  // Adicione mais traduções aqui
+  'footer.customerService': 'Atendimento ao Cliente',
+  'footer.about': 'Sobre Nós',
+  'footer.careers': 'Carreiras',
+  'footer.blog': 'Blog',
+  'footer.contact': 'Contato',
+  'footer.products': 'Produtos',
+  'footer.farmMachinery': 'Maquinário Agrícola',
+  'footer.vehicles': 'Veículos',
+  'footer.irrigation': 'Sistemas de Irrigação',
+  'footer.implements': 'Implementos',
+  'footer.support': 'Suporte',
+  'footer.shipping': 'Informações de Envio',
+  'footer.returns': 'Devoluções',
+  'footer.warranty': 'Garantia',
+  'footer.maintenance': 'Manutenção',
+  'footer.financing': 'Financiamento',
+  'footer.newsletter': 'Inscreva-se em nossa newsletter',
+  'footer.subscribe': 'Inscrever',
+  'footer.rights': '© 2025 AgriCartopia. Todos os direitos reservados.',
 };
