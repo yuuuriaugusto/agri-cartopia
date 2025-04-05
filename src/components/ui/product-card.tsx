@@ -1,10 +1,9 @@
-
 import { Link } from 'react-router-dom';
 import { ArrowRight, Heart, Tag } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
-import AddToCartButton from './add-to-cart-button';
+import AddToCartButton from '@/components/ui/botao-adicionar-carrinho';
 import { type Product } from '@/context/ProductContext';
 
 interface ProductCardProps {

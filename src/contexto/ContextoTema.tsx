@@ -56,3 +56,6 @@ export const ThemeProvider = ({ children }: ThemeProviderProps) => {
     </ThemeContext.Provider>
   );
 };
+
+// Export with Portuguese name for backwards compatibility
+export const ProvedorTema = ThemeProvider;

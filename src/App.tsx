@@ -6,27 +6,27 @@ import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import { CartProvider } from "@/context/CartContext";
 import { ProductProvider, useProducts } from "@/context/ProductContext";
-import { ProvedorTema } from "@/contexto/ContextoTema";
-import { ProvedorTraducao } from "@/contexto/ContextoTraducao";
+import { ThemeProvider } from "@/contexto/ContextoTema";
+import { TranslationProvider } from "@/contexto/ContextoTraducao";
 import { useEffect } from "react";
 import { useIsMobile } from "@/hooks/use-mobile";
 import Index from "./pages/Index";
-import Produtos from "./pages/Produtos";
-import DetalhesProduto from "./pages/DetalhesProduto";
-import Carrinho from "./pages/Carrinho";
+import Products from "./pages/Products";
+import ProductDetail from "./pages/ProductDetail";
+import Cart from "./pages/Cart";
 import Checkout from "./pages/Checkout";
-import RastreamentoPedido from "./pages/RastreamentoPedido";
-import NaoEncontrado from "./pages/NaoEncontrado";
+import OrderTracking from "./pages/OrderTracking";
+import NotFound from "./pages/NotFound";
 import Login from "./pages/Login";
 import Depoimentos from "./pages/Depoimentos";
 import Sobre from "./pages/Sobre";
 import Contato from "./pages/Contato";
-import LayoutAdmin from "./components/layout/LayoutAdmin";
-import LayoutAdminMovel from "./components/layout/LayoutAdminMovel";
+import LayoutAdmin from "@/components/layout/AdminLayout";
+import LayoutAdminMovel from "@/components/layout/MobileAdminLayout";
 import Dashboard from "./pages/admin/Dashboard";
-import ProdutosAdmin from "./pages/admin/Produtos";
-import Pedidos from "./pages/admin/Pedidos";
-import Clientes from "./pages/admin/Clientes";
+import ProductsAdmin from "./pages/admin/Products";
+import Orders from "./pages/admin/Orders";
+import Customers from "./pages/admin/Customers";
 
 const queryClient = new QueryClient();
 
@@ -53,8 +53,8 @@ const App = () => {
   
   return (
     <QueryClientProvider client={queryClient}>
-      <ProvedorTema>
-        <ProvedorTraducao>
+      <ThemeProvider>
+        <TranslationProvider>
           <ProductProvider>
             <CartProvider>
               <TooltipProvider>
@@ -65,11 +65,11 @@ const App = () => {
                     <Routes>
                       {/* Rotas Públicas */}
                       <Route path="/" element={<Index />} />
-                      <Route path="/produtos" element={<Produtos />} />
-                      <Route path="/produtos/:id" element={<DetalhesProduto />} />
-                      <Route path="/carrinho" element={<Carrinho />} />
+                      <Route path="/produtos" element={<Products />} />
+                      <Route path="/produtos/:id" element={<ProductDetail />} />
+                      <Route path="/carrinho" element={<Cart />} />
                       <Route path="/checkout" element={<Checkout />} />
-                      <Route path="/rastreamento-pedido" element={<RastreamentoPedido />} />
+                      <Route path="/rastreamento-pedido" element={<OrderTracking />} />
                       <Route path="/login" element={<Login />} />
                       <Route path="/depoimentos" element={<Depoimentos />} />
                       <Route path="/sobre" element={<Sobre />} />
@@ -80,30 +80,30 @@ const App = () => {
                         /* Rotas Admin Mobile */
                         <Route path="/admin" element={<LayoutAdminMovel />}>
                           <Route path="dashboard" element={<Dashboard />} />
-                          <Route path="produtos" element={<ProdutosAdmin />} />
-                          <Route path="pedidos" element={<Pedidos />} />
-                          <Route path="clientes" element={<Clientes />} />
+                          <Route path="produtos" element={<ProductsAdmin />} />
+                          <Route path="pedidos" element={<Orders />} />
+                          <Route path="clientes" element={<Customers />} />
                         </Route>
                       ) : (
                         /* Rotas Admin Desktop */
                         <Route path="/admin" element={<LayoutAdmin />}>
                           <Route path="dashboard" element={<Dashboard />} />
-                          <Route path="produtos" element={<ProdutosAdmin />} />
-                          <Route path="pedidos" element={<Pedidos />} />
-                          <Route path="clientes" element={<Clientes />} />
+                          <Route path="produtos" element={<ProductsAdmin />} />
+                          <Route path="pedidos" element={<Orders />} />
+                          <Route path="clientes" element={<Customers />} />
                         </Route>
                       )}
                       
                       {/* 404 - Rota padrão */}
-                      <Route path="*" element={<NaoEncontrado />} />
+                      <Route path="*" element={<NotFound />} />
                     </Routes>
                   </ExpositorContextoProdutos>
                 </BrowserRouter>
               </TooltipProvider>
             </CartProvider>
           </ProductProvider>
-        </ProvedorTraducao>
-      </ProvedorTema>
+        </TranslationProvider>
+      </ThemeProvider>
     </QueryClientProvider>
   );
 };

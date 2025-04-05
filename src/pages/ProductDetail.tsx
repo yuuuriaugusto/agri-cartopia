@@ -21,7 +21,7 @@ import { cn } from '@/lib/utils';
 import Navbar from '@/components/layout/Navbar';
 import Footer from '@/components/layout/Footer';
 import ProductCard from '@/components/ui/product-card';
-import AddToCartButton from '@/components/ui/add-to-cart-button';
+import AddToCartButton from '@/components/ui/botao-adicionar-carrinho';
 import { useProducts } from '@/context/ProductContext';
 
 const ProductDetail = () => {

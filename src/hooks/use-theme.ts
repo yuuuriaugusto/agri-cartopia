@@ -1,7 +1,8 @@
-
 import { useContext } from 'react';
 import { ThemeContext } from '@/contexto/ContextoTema';
 
-export const useTema = () => {
+export const useTheme = () => {
   return useContext(ThemeContext);
 };
+
+export const useTema = useTheme;

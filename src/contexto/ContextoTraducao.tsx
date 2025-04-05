@@ -68,3 +68,6 @@ export const TranslationProvider = ({ children }: TranslationProviderProps) => {
     </TranslationContext.Provider>
   );
 };
+
+// Export with Portuguese name for backwards compatibility
+export const ProvedorTraducao = TranslationProvider;
