@@ -1,9 +1,8 @@
-
 import { useState, useEffect } from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import { cn } from '@/lib/utils';
 import { Button } from '@/components/ui/button';
-import { ShoppingCart, Menu, X, Tractor, Search, User, Heart, Bell } from 'lucide-react';
+import { ShoppingCart, Menu, X, Tractor, Search, User } from 'lucide-react';
 import { useIsMobile } from '@/hooks/use-mobile';
 
 const Navbar = () => {
@@ -47,33 +46,18 @@ const Navbar = () => {
       )}
     >
       <div className="container flex items-center justify-between">
-        <div className="flex items-center gap-4">
-          <Button
-            variant="ghost"
-            size="icon"
-            className={cn(
-              "rounded-full md:hidden transition-colors",
-              isScrolled ? "text-foreground hover:text-primary" : "text-white hover:text-primary-foreground"
-            )}
-            onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-            aria-label={mobileMenuOpen ? "Close menu" : "Open menu"}
-          >
-            {mobileMenuOpen ? <X className="h-5 w-5" /> : <Menu className="h-5 w-5" />}
-          </Button>
-          
-          <Link 
-            to="/" 
-            className="flex items-center gap-2 font-serif text-xl font-semibold"
-          >
-            <Tractor className="h-6 w-6 text-primary" />
-            <span className={cn(
-              "transition-colors duration-300",
-              isScrolled ? "text-foreground" : "text-white text-shadow"
-            )}>
-              Agri<span className="text-primary">Cartopia</span>
-            </span>
-          </Link>
-        </div>
+        <Link 
+          to="/" 
+          className="flex items-center gap-2 font-serif text-xl font-semibold"
+        >
+          <Tractor className="h-6 w-6 text-primary" />
+          <span className={cn(
+            "transition-colors duration-300",
+            isScrolled ? "text-foreground" : "text-white text-shadow"
+          )}>
+            Agri<span className="text-primary">Cartopia</span>
+          </span>
+        </Link>
 
         <nav className="hidden md:flex items-center space-x-1">
           {navLinks.map((link) => (
@@ -119,30 +103,6 @@ const Navbar = () => {
             <User className="h-5 w-5" />
           </Button>
           
-          <Button 
-            variant="ghost" 
-            size="icon" 
-            className={cn(
-              "rounded-full transition-colors hidden sm:flex",
-              isScrolled ? "text-foreground hover:text-primary" : "text-white hover:text-primary-foreground"
-            )}
-            aria-label="Favorites"
-          >
-            <Heart className="h-5 w-5" />
-          </Button>
-          
-          <Button 
-            variant="ghost" 
-            size="icon" 
-            className={cn(
-              "rounded-full transition-colors hidden sm:flex",
-              isScrolled ? "text-foreground hover:text-primary" : "text-white hover:text-primary-foreground"
-            )}
-            aria-label="Notifications"
-          >
-            <Bell className="h-5 w-5" />
-          </Button>
-          
           <Link to="/cart">
             <Button 
               variant="ghost" 
@@ -159,6 +119,19 @@ const Navbar = () => {
               </span>
             </Button>
           </Link>
+          
+          <Button
+            variant="ghost"
+            size="icon"
+            className={cn(
+              "rounded-full md:hidden transition-colors",
+              isScrolled ? "text-foreground hover:text-primary" : "text-white hover:text-primary-foreground"
+            )}
+            onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
+            aria-label={mobileMenuOpen ? "Close menu" : "Open menu"}
+          >
+            {mobileMenuOpen ? <X className="h-5 w-5" /> : <Menu className="h-5 w-5" />}
+          </Button>
         </div>
       </div>
 
