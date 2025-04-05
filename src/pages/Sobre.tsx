@@ -1,5 +1,8 @@
+
+import React from 'react';
 import Layout from '@/components/layout/Layout';
 import { useTranslation } from '@/hooks/use-translation';
+import { Leaf, Award, Users, Clock } from 'lucide-react';
 
 const About = () => {
   const { t } = useTranslation();
