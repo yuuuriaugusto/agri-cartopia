@@ -33,8 +33,11 @@ export const TranslationProvider = ({ children }: TranslationProviderProps) => {
       const browserLang = navigator.language;
       if (browserLang.startsWith('pt')) {
         setLanguage('pt-BR');
-      } else {
+      } else if (browserLang.startsWith('en')) {
         setLanguage('en');
+      } else {
+        // Definir português como idioma padrão
+        setLanguage('pt-BR');
       }
     }
   }, []);

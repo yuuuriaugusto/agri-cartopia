@@ -25,6 +25,7 @@ import {
 import { toast } from "sonner";
 import { userService } from "@/services/UserService";
 import { Tractor } from "lucide-react";
+import { useTranslation } from "@/hooks/use-translation";
 
 // Schema for login validation
 const loginSchema = z.object({
@@ -38,6 +39,7 @@ type LoginFormValues = z.infer<typeof loginSchema>;
 export default function Login() {
   const navigate = useNavigate();
   const [isLoading, setIsLoading] = useState(false);
+  const { t } = useTranslation();
   
   // Initialize form with react-hook-form
   const form = useForm<LoginFormValues>({
@@ -55,13 +57,13 @@ export default function Login() {
     try {
       // Attempt login
       await userService.login(data.email, data.password);
-      toast.success("Logged in successfully");
+      toast.success(t('login.success'));
       
       // Redirect to admin dashboard
       navigate("/admin/dashboard");
     } catch (error) {
       // Show error toast if login fails
-      toast.error("Invalid email or password");
+      toast.error(t('login.error'));
       console.error(error);
     } finally {
       setIsLoading(false);
@@ -79,9 +81,9 @@ export default function Login() {
       
       <Card className="w-full max-w-md">
         <CardHeader>
-          <CardTitle className="text-2xl text-center">Admin Login</CardTitle>
+          <CardTitle className="text-2xl text-center">{t('login.title')}</CardTitle>
           <CardDescription className="text-center">
-            Enter your credentials to access the admin panel
+            {t('login.subtitle')}
           </CardDescription>
         </CardHeader>
         <CardContent>
@@ -92,7 +94,7 @@ export default function Login() {
                 name="email"
                 render={({ field }) => (
                   <FormItem>
-                    <FormLabel>Email</FormLabel>
+                    <FormLabel>{t('login.email')}</FormLabel>
                     <FormControl>
                       <Input 
                         placeholder="your@email.com" 
@@ -111,7 +113,7 @@ export default function Login() {
                 name="password"
                 render={({ field }) => (
                   <FormItem>
-                    <FormLabel>Password</FormLabel>
+                    <FormLabel>{t('login.password')}</FormLabel>
                     <FormControl>
                       <Input 
                         placeholder="••••••••" 
@@ -126,7 +128,7 @@ export default function Login() {
               />
               
               <Button type="submit" className="w-full mt-6" disabled={isLoading}>
-                {isLoading ? "Signing in..." : "Sign in"}
+                {isLoading ? t('login.signingIn') : t('login.signIn')}
               </Button>
             </form>
           </Form>
@@ -134,7 +136,7 @@ export default function Login() {
         <CardFooter className="flex flex-col space-y-2">
           <div className="text-sm text-center text-muted-foreground">
             <Link to="/" className="text-primary hover:underline">
-              Return to Store
+              {t('login.returnToStore')}
             </Link>
           </div>
         </CardFooter>
