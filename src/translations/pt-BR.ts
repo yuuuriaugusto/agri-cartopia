@@ -1,6 +1,6 @@
 
 export const ptBR = {
-  // Common
+  // Comum
   common: {
     home: 'Início',
     products: 'Produtos',
@@ -36,12 +36,12 @@ export const ptBR = {
     copyright: '© 2025 AgriCartopia. Todos os direitos reservados.',
   },
   
-  // Navbar
+  // Barra de Navegação
   navbar: {
     searchPlaceholder: 'Buscar produtos...',
   },
   
-  // Footer
+  // Rodapé
   footer: {
     companyInfo: 'Seu parceiro confiável para maquinário agrícola, veículos e implementos de alta qualidade. Atendendo agricultores e empresas desde 2010.',
     quickLinks: 'Links Rápidos',
@@ -51,7 +51,7 @@ export const ptBR = {
     emailPlaceholder: 'Seu email',
   },
   
-  // Home Page
+  // Página Inicial
   home: {
     heroTitle: 'Equipamentos Agrícolas de Alta Qualidade',
     heroSubtitle: 'Soluções agrícolas inovadoras para potencializar sua produtividade',
@@ -66,7 +66,7 @@ export const ptBR = {
     partnersSubtitle: 'Trabalhamos com as melhores marcas da indústria',
   },
   
-  // About Page
+  // Página Sobre
   about: {
     title: 'Sobre a',
     titleHighlight: 'AgriCartopia',
@@ -108,7 +108,7 @@ export const ptBR = {
     },
   },
   
-  // Contact Page
+  // Página de Contato
   contact: {
     title: 'Entre em',
     titleHighlight: 'Contato',
@@ -147,7 +147,7 @@ export const ptBR = {
     }
   },
   
-  // Testimonials Page
+  // Página de Depoimentos
   testimonials: {
     title: 'Depoimentos de',
     titleHighlight: 'Clientes',
@@ -157,7 +157,7 @@ export const ptBR = {
     submitButton: 'Enviar Seu Depoimento'
   },
   
-  // Products Page
+  // Página de Produtos
   products: {
     title: 'Nossos',
     titleHighlight: 'Produtos',
