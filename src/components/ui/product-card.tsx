@@ -1,3 +1,4 @@
+
 import { Link } from 'react-router-dom';
 import { ArrowRight, Heart, Tag } from 'lucide-react';
 import { cn } from '@/lib/utils';
@@ -5,6 +6,7 @@ import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import AddToCartButton from '@/components/ui/botao-adicionar-carrinho';
 import { type Product } from '@/context/ProductContext';
+import { useTranslation } from '@/hooks/use-translation';
 
 interface ProductCardProps {
   product: Product;
@@ -14,6 +16,7 @@ interface ProductCardProps {
 
 const ProductCard = ({ product, size = 'md', className }: ProductCardProps) => {
   const { id, name, price, images, rating, brand, isNew, discount } = product;
+  const { t } = useTranslation();
   
   const formattedPrice = new Intl.NumberFormat('en-US', {
     style: 'currency',
@@ -112,7 +115,7 @@ const ProductCard = ({ product, size = 'md', className }: ProductCardProps) => {
                 <ArrowRight className="h-4 w-4" />
               </Button>
             </Link>
-            <AddToCartButton product={product} size="sm" className="h-9" />
+            <AddToCartButton product={product} size="sm" className="h-9" showText={false} />
           </div>
         </div>
       </div>

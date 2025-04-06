@@ -21,7 +21,7 @@ export const en = {
   'common.language': 'Language',
   'common.theme': 'Theme',
   'common.account': 'Account',
-  'common.cart': 'Cart',
+  'common.cart': 'Add to Cart',
   'common.close': 'Close',
   'common.menu': 'Menu',
   'common.subscribe': 'Subscribe',

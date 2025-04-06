@@ -1,76 +1,54 @@
 
-import { createContext, useState, useEffect, ReactNode } from 'react';
-import { translations } from '@/translations';
-
-export type Language = 'pt-BR' | 'en';
+import React, { createContext, useState, useEffect, ReactNode } from 'react';
+import { translations, type Language } from '@/translations';
 
 interface TranslationContextType {
   language: Language;
-  setLanguage: (lang: Language) => void;
+  setLanguage: (language: Language) => void;
   t: (key: string) => string;
 }
 
+const defaultLanguage: Language = 'pt-BR';
+
 export const TranslationContext = createContext<TranslationContextType>({
-  language: 'pt-BR',
+  language: defaultLanguage,
   setLanguage: () => {},
   t: () => '',
 });
 
-interface TranslationProviderProps {
-  children: ReactNode;
-}
-
-export const TranslationProvider = ({ children }: TranslationProviderProps) => {
-  const [language, setLanguage] = useState<Language>('pt-BR');
-
+export const TranslationProvider = ({ children }: { children: ReactNode }) => {
+  const [language, setLanguage] = useState<Language>(defaultLanguage);
+  
+  // Set language based on browser preference, with a fallback to Portuguese
   useEffect(() => {
-    // Check for stored language preference
-    const storedLang = localStorage.getItem('language') as Language;
-    if (storedLang && (storedLang === 'pt-BR' || storedLang === 'en')) {
-      setLanguage(storedLang);
+    const browserLang = navigator.language;
+    // Default to pt-BR, only change to English if explicitly using English
+    if (browserLang.startsWith('en')) {
+      setLanguage('en');
     } else {
-      // Try to detect browser language
-      const browserLang = navigator.language;
-      if (browserLang.startsWith('pt')) {
-        setLanguage('pt-BR');
-      } else if (browserLang.startsWith('en')) {
-        setLanguage('en');
-      } else {
-        // Definir português como idioma padrão
-        setLanguage('pt-BR');
-      }
+      setLanguage('pt-BR');
     }
   }, []);
-
-  const changeLanguage = (lang: Language) => {
-    setLanguage(lang);
-    localStorage.setItem('language', lang);
-    document.documentElement.lang = lang;
-  };
-
+  
   // Translation function
   const t = (key: string): string => {
-    const keys = key.split('.');
-    let value: any = translations[language];
-    
-    for (const k of keys) {
-      if (value && typeof value === 'object' && k in value) {
-        value = value[k];
-      } else {
-        console.warn(`Translation key not found: ${key}`);
-        return key;
+    if (!translations[language] || !translations[language][key]) {
+      console.warn(`Translation key not found: ${key}`);
+      
+      // Try to find the key in the other language as a fallback
+      const otherLang: Language = language === 'en' ? 'pt-BR' : 'en';
+      if (translations[otherLang] && translations[otherLang][key]) {
+        return translations[otherLang][key];
       }
+      
+      return key;
     }
-    
-    return value || key;
+    return translations[language][key];
   };
-
+  
   return (
-    <TranslationContext.Provider value={{ language, setLanguage: changeLanguage, t }}>
+    <TranslationContext.Provider value={{ language, setLanguage, t }}>
       {children}
     </TranslationContext.Provider>
   );
 };
-
-// Export with Portuguese name for backwards compatibility
-export const ProvedorTraducao = TranslationProvider;

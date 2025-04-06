@@ -19,7 +19,7 @@ const AddToCartButton = ({
   product, 
   size = 'default', // Changed default from 'md' to 'default'
   variant = 'default',
-  showText = false,
+  showText = true,
   quantity = 1,
   className 
 }: AddToCartButtonProps) => {
