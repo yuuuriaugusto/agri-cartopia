@@ -27,6 +27,10 @@ import Dashboard from "./pages/admin/Dashboard";
 import ProductsAdmin from "./pages/admin/Products";
 import Orders from "./pages/admin/Orders";
 import Customers from "./pages/admin/Customers";
+import Categories from "./pages/admin/Categories";
+import Analytics from "./pages/admin/Analytics";
+import Reports from "./pages/admin/Reports";
+import Settings from "./pages/admin/Settings";
 
 const queryClient = new QueryClient();
 
@@ -83,6 +87,10 @@ const App = () => {
                           <Route path="produtos" element={<ProductsAdmin />} />
                           <Route path="pedidos" element={<Orders />} />
                           <Route path="clientes" element={<Customers />} />
+                          <Route path="categorias" element={<Categories />} />
+                          <Route path="analytics" element={<Analytics />} />
+                          <Route path="relatorios" element={<Reports />} />
+                          <Route path="configuracoes" element={<Settings />} />
                         </Route>
                       ) : (
                         /* Rotas Admin Desktop */
@@ -91,6 +99,10 @@ const App = () => {
                           <Route path="produtos" element={<ProductsAdmin />} />
                           <Route path="pedidos" element={<Orders />} />
                           <Route path="clientes" element={<Customers />} />
+                          <Route path="categorias" element={<Categories />} />
+                          <Route path="analytics" element={<Analytics />} />
+                          <Route path="relatorios" element={<Reports />} />
+                          <Route path="configuracoes" element={<Settings />} />
                         </Route>
                       )}
                       

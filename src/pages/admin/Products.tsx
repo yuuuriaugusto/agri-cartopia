@@ -30,12 +30,14 @@ import { productService } from "@/services/ProductService";
 import { Product } from "@/context/ProductContext";
 import ProductForm from "@/components/admin/ProductForm";
 import { toast } from "sonner";
+import { useTranslation } from "@/hooks/use-translation";
 
 const Products = () => {
   const [isAddDialogOpen, setIsAddDialogOpen] = useState(false);
   const [isEditDialogOpen, setIsEditDialogOpen] = useState(false);
   const [searchQuery, setSearchQuery] = useState("");
   const [selectedProduct, setSelectedProduct] = useState<Product | null>(null);
+  const { t } = useTranslation();
   
   const { data: products, isLoading, refetch } = useQuery({
     queryKey: ['admin-products'],
@@ -53,17 +55,17 @@ const Products = () => {
   };
 
   const handleViewProduct = (productId: string) => {
-    window.open(`/products/${productId}`, '_blank');
+    window.open(`/produtos/${productId}`, '_blank');
   };
 
   const handleDeleteProduct = async (productId: string) => {
-    if (window.confirm("Are you sure you want to delete this product?")) {
+    if (window.confirm(t('admin.products.confirmDelete'))) {
       try {
         await productService.deleteProduct(productId);
-        toast.success("Product deleted successfully");
+        toast.success(t('admin.products.deleted'));
         refetch();
       } catch (error) {
-        toast.error("Failed to delete product");
+        toast.error(t('admin.products.deleteFailed'));
       }
     }
   };
@@ -77,17 +79,17 @@ const Products = () => {
   return (
     <div className="space-y-6">
       <div className="flex justify-between items-center">
-        <h1 className="text-3xl font-bold tracking-tight">Products</h1>
+        <h1 className="text-3xl font-bold tracking-tight">{t('admin.products.title')}</h1>
         <Button onClick={handleAddProduct}>
           <Plus className="mr-2 h-4 w-4" />
-          Add Product
+          {t('admin.products.add')}
         </Button>
       </div>
       
       <div className="relative">
         <Search className="absolute left-2 top-2.5 h-4 w-4 text-muted-foreground" />
         <Input
-          placeholder="Search products..."
+          placeholder={t('admin.products.search')}
           className="pl-8"
           value={searchQuery}
           onChange={(e) => setSearchQuery(e.target.value)}
@@ -95,18 +97,18 @@ const Products = () => {
       </div>
       
       {isLoading ? (
-        <div className="flex justify-center p-4">Loading products...</div>
+        <div className="flex justify-center p-4">Carregando produtos...</div>
       ) : (
         <div className="rounded-md border overflow-hidden">
           <Table>
             <TableHeader>
               <TableRow>
-                <TableHead>Name</TableHead>
-                <TableHead>Category</TableHead>
-                <TableHead>Price</TableHead>
-                <TableHead>Stock</TableHead>
-                <TableHead>Brand</TableHead>
-                <TableHead className="w-[100px]">Actions</TableHead>
+                <TableHead>{t('admin.products.name')}</TableHead>
+                <TableHead>{t('admin.products.category')}</TableHead>
+                <TableHead>{t('admin.products.price')}</TableHead>
+                <TableHead>{t('admin.products.stock')}</TableHead>
+                <TableHead>{t('admin.products.brand')}</TableHead>
+                <TableHead className="w-[100px]">{t('admin.products.actions')}</TableHead>
               </TableRow>
             </TableHeader>
             <TableBody>
@@ -115,7 +117,7 @@ const Products = () => {
                   <TableRow key={product.id}>
                     <TableCell className="font-medium">{product.name}</TableCell>
                     <TableCell>{product.category}</TableCell>
-                    <TableCell>${product.price.toFixed(2)}</TableCell>
+                    <TableCell>R$ {product.price.toFixed(2)}</TableCell>
                     <TableCell>{product.stock}</TableCell>
                     <TableCell>{product.brand}</TableCell>
                     <TableCell>
@@ -123,21 +125,21 @@ const Products = () => {
                         <DropdownMenuTrigger asChild>
                           <Button variant="ghost" size="icon">
                             <MoreHorizontal className="h-4 w-4" />
-                            <span className="sr-only">Actions</span>
+                            <span className="sr-only">Ações</span>
                           </Button>
                         </DropdownMenuTrigger>
                         <DropdownMenuContent align="end">
                           <DropdownMenuItem onClick={() => handleViewProduct(product.id)}>
                             <Eye className="mr-2 h-4 w-4" />
-                            View
+                            {t('admin.products.view')}
                           </DropdownMenuItem>
                           <DropdownMenuItem onClick={() => handleEditProduct(product)}>
                             <Pencil className="mr-2 h-4 w-4" />
-                            Edit
+                            {t('admin.products.edit')}
                           </DropdownMenuItem>
                           <DropdownMenuItem onClick={() => handleDeleteProduct(product.id)}>
                             <Trash2 className="mr-2 h-4 w-4" />
-                            Delete
+                            {t('admin.products.delete')}
                           </DropdownMenuItem>
                         </DropdownMenuContent>
                       </DropdownMenu>
@@ -147,7 +149,7 @@ const Products = () => {
               ) : (
                 <TableRow>
                   <TableCell colSpan={6} className="h-24 text-center">
-                    No products found.
+                    {t('admin.products.noProducts')}
                   </TableCell>
                 </TableRow>
               )}
@@ -159,7 +161,7 @@ const Products = () => {
       <Dialog open={isAddDialogOpen} onOpenChange={setIsAddDialogOpen}>
         <DialogContent className="sm:max-w-[600px]">
           <DialogHeader>
-            <DialogTitle>Add New Product</DialogTitle>
+            <DialogTitle>{t('admin.products.addNew')}</DialogTitle>
           </DialogHeader>
           <ProductForm 
             onSubmit={async () => {
@@ -173,7 +175,7 @@ const Products = () => {
       <Dialog open={isEditDialogOpen} onOpenChange={setIsEditDialogOpen}>
         <DialogContent className="sm:max-w-[600px]">
           <DialogHeader>
-            <DialogTitle>Edit Product</DialogTitle>
+            <DialogTitle>{t('admin.products.editProduct')}</DialogTitle>
           </DialogHeader>
           <ProductForm 
             product={selectedProduct}

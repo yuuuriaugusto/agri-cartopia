@@ -32,17 +32,18 @@ import {
   MapPin,
   Calendar
 } from "lucide-react";
+import { useTranslation } from "@/hooks/use-translation";
 
 // Mock data - in a real app this would come from an API
 const mockCustomers = Array.from({ length: 20 }, (_, i) => ({
   id: `CUST-${1000 + i}`,
-  name: `${['John', 'Jane', 'Michael', 'Sarah', 'David', 'Emma'][Math.floor(Math.random() * 6)]} ${['Smith', 'Johnson', 'Williams', 'Jones', 'Brown', 'Davis'][Math.floor(Math.random() * 6)]}`,
-  email: `customer${i+1}@example.com`,
-  phone: `+1 ${Math.floor(Math.random() * 1000)}-${Math.floor(Math.random() * 1000)}-${Math.floor(Math.random() * 10000)}`,
+  name: `${['João', 'Maria', 'Carlos', 'Ana', 'Paulo', 'Fernanda'][Math.floor(Math.random() * 6)]} ${['Silva', 'Oliveira', 'Santos', 'Souza', 'Pereira', 'Costa'][Math.floor(Math.random() * 6)]}`,
+  email: `cliente${i+1}@exemplo.com.br`,
+  phone: `+55 ${Math.floor(Math.random() * 100)}-${Math.floor(Math.random() * 1000)}-${Math.floor(Math.random() * 10000)}`,
   joinDate: new Date(Date.now() - Math.random() * 365 * 24 * 60 * 60 * 1000).toISOString().split('T')[0],
   totalSpent: +(Math.random() * 5000 + 100).toFixed(2),
   orders: Math.floor(Math.random() * 20) + 1,
-  address: `${Math.floor(Math.random() * 1000) + 1} ${['Main', 'Oak', 'Pine', 'Maple', 'Cedar'][Math.floor(Math.random() * 5)]} St, ${['New York', 'Los Angeles', 'Chicago', 'Houston', 'Phoenix'][Math.floor(Math.random() * 5)]}`
+  address: `${Math.floor(Math.random() * 1000) + 1} Rua ${['Principal', 'das Flores', 'dos Pinheiros', 'da Paz', 'das Palmeiras'][Math.floor(Math.random() * 5)]}, ${['São Paulo', 'Rio de Janeiro', 'Belo Horizonte', 'Brasília', 'Porto Alegre'][Math.floor(Math.random() * 5)]}`
 }));
 
 interface CustomerDetailsProps {
@@ -51,6 +52,8 @@ interface CustomerDetailsProps {
 }
 
 const CustomerDetails = ({ customer, onClose }: CustomerDetailsProps) => {
+  const { t } = useTranslation();
+
   return (
     <div className="space-y-6">
       <div className="flex flex-col gap-2 items-center justify-center">
@@ -58,7 +61,7 @@ const CustomerDetails = ({ customer, onClose }: CustomerDetailsProps) => {
           <User className="h-12 w-12 text-gray-500" />
         </div>
         <h3 className="text-xl font-bold">{customer.name}</h3>
-        <p className="text-sm text-muted-foreground">Customer ID: {customer.id}</p>
+        <p className="text-sm text-muted-foreground">{t('admin.customers.customerId')}: {customer.id}</p>
       </div>
 
       <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
@@ -76,39 +79,39 @@ const CustomerDetails = ({ customer, onClose }: CustomerDetailsProps) => {
         </div>
         <div className="flex items-center gap-2">
           <Calendar className="h-4 w-4 text-muted-foreground" />
-          <span>Joined on {customer.joinDate}</span>
+          <span>Registrado em {customer.joinDate}</span>
         </div>
       </div>
 
       <div className="border rounded-md p-4 space-y-4">
-        <h4 className="font-medium">Customer Summary</h4>
+        <h4 className="font-medium">{t('admin.customers.summary')}</h4>
         <div className="grid grid-cols-2 gap-4">
           <div>
-            <p className="text-sm text-muted-foreground">Total Orders</p>
+            <p className="text-sm text-muted-foreground">{t('admin.customers.totalOrders')}</p>
             <p className="text-2xl font-bold">{customer.orders}</p>
           </div>
           <div>
-            <p className="text-sm text-muted-foreground">Total Spent</p>
-            <p className="text-2xl font-bold">${customer.totalSpent.toFixed(2)}</p>
+            <p className="text-sm text-muted-foreground">{t('admin.customers.totalSpent')}</p>
+            <p className="text-2xl font-bold">R$ {customer.totalSpent.toFixed(2)}</p>
           </div>
         </div>
       </div>
 
       <div className="border-t pt-4">
-        <h4 className="font-medium mb-2">Recent Orders</h4>
+        <h4 className="font-medium mb-2">{t('admin.customers.recentOrders')}</h4>
         <div className="space-y-2">
           {Array.from({ length: Math.min(3, customer.orders) }, (_, i) => (
             <div key={i} className="border rounded-md p-3 flex justify-between">
               <div>
-                <div className="font-medium">Order #{`ORD-${1000 + i}`}</div>
+                <div className="font-medium">Pedido #{`ORD-${1000 + i}`}</div>
                 <div className="text-sm text-muted-foreground">
                   {new Date(Date.now() - Math.random() * 90 * 24 * 60 * 60 * 1000).toISOString().split('T')[0]}
                 </div>
               </div>
               <div className="text-right">
-                <div className="font-medium">${(Math.random() * 500 + 50).toFixed(2)}</div>
+                <div className="font-medium">R$ {(Math.random() * 500 + 50).toFixed(2)}</div>
                 <div className="text-sm text-muted-foreground">
-                  {['Processing', 'Shipped', 'Delivered'][Math.floor(Math.random() * 3)]}
+                  {['Processando', 'Enviado', 'Entregue'][Math.floor(Math.random() * 3)]}
                 </div>
               </div>
             </div>
@@ -117,10 +120,10 @@ const CustomerDetails = ({ customer, onClose }: CustomerDetailsProps) => {
       </div>
 
       <div className="flex justify-end space-x-2">
-        <Button variant="outline" onClick={onClose}>Close</Button>
+        <Button variant="outline" onClick={onClose}>{t('common.close')}</Button>
         <Button>
           <Mail className="mr-2 h-4 w-4" />
-          Contact Customer
+          {t('admin.customers.contactCustomer')}
         </Button>
       </div>
     </div>
@@ -131,7 +134,8 @@ const Customers = () => {
   const [searchQuery, setSearchQuery] = useState("");
   const [selectedCustomer, setSelectedCustomer] = useState<typeof mockCustomers[0] | null>(null);
   const [isDetailsOpen, setIsDetailsOpen] = useState(false);
-
+  const { t } = useTranslation();
+  
   const handleViewCustomer = (customer: typeof mockCustomers[0]) => {
     setSelectedCustomer(customer);
     setIsDetailsOpen(true);
@@ -145,12 +149,12 @@ const Customers = () => {
 
   return (
     <div className="space-y-6">
-      <h1 className="text-3xl font-bold tracking-tight">Customers</h1>
+      <h1 className="text-3xl font-bold tracking-tight">{t('admin.customers.title')}</h1>
       
       <div className="relative">
         <Search className="absolute left-2 top-2.5 h-4 w-4 text-muted-foreground" />
         <Input
-          placeholder="Search customers by name, email or ID..."
+          placeholder={t('admin.customers.search')}
           className="pl-8"
           value={searchQuery}
           onChange={(e) => setSearchQuery(e.target.value)}
@@ -161,12 +165,12 @@ const Customers = () => {
         <Table>
           <TableHeader>
             <TableRow>
-              <TableHead>Name</TableHead>
-              <TableHead>Email</TableHead>
-              <TableHead>Join Date</TableHead>
-              <TableHead>Orders</TableHead>
-              <TableHead>Spent</TableHead>
-              <TableHead className="w-[100px]">Actions</TableHead>
+              <TableHead>{t('admin.customers.name')}</TableHead>
+              <TableHead>{t('admin.customers.email')}</TableHead>
+              <TableHead>{t('admin.customers.joinDate')}</TableHead>
+              <TableHead>{t('admin.customers.orders')}</TableHead>
+              <TableHead>{t('admin.customers.spent')}</TableHead>
+              <TableHead className="w-[100px]">{t('admin.customers.actions')}</TableHead>
             </TableRow>
           </TableHeader>
           <TableBody>
@@ -177,23 +181,23 @@ const Customers = () => {
                   <TableCell>{customer.email}</TableCell>
                   <TableCell>{customer.joinDate}</TableCell>
                   <TableCell>{customer.orders}</TableCell>
-                  <TableCell>${customer.totalSpent.toFixed(2)}</TableCell>
+                  <TableCell>R$ {customer.totalSpent.toFixed(2)}</TableCell>
                   <TableCell>
                     <DropdownMenu>
                       <DropdownMenuTrigger asChild>
                         <Button variant="ghost" size="icon">
                           <MoreHorizontal className="h-4 w-4" />
-                          <span className="sr-only">Actions</span>
+                          <span className="sr-only">Ações</span>
                         </Button>
                       </DropdownMenuTrigger>
                       <DropdownMenuContent align="end">
                         <DropdownMenuItem onClick={() => handleViewCustomer(customer)}>
                           <User className="mr-2 h-4 w-4" />
-                          View Profile
+                          {t('admin.customers.viewProfile')}
                         </DropdownMenuItem>
                         <DropdownMenuItem>
                           <Mail className="mr-2 h-4 w-4" />
-                          Send Email
+                          {t('admin.customers.sendEmail')}
                         </DropdownMenuItem>
                       </DropdownMenuContent>
                     </DropdownMenu>
@@ -203,7 +207,7 @@ const Customers = () => {
             ) : (
               <TableRow>
                 <TableCell colSpan={6} className="h-24 text-center">
-                  No customers found.
+                  {t('admin.customers.noCustomers')}
                 </TableCell>
               </TableRow>
             )}
@@ -214,9 +218,9 @@ const Customers = () => {
       <Dialog open={isDetailsOpen} onOpenChange={setIsDetailsOpen}>
         <DialogContent className="sm:max-w-[600px]">
           <DialogHeader>
-            <DialogTitle>Customer Profile</DialogTitle>
+            <DialogTitle>{t('admin.customers.profile')}</DialogTitle>
             <DialogDescription>
-              Detailed information about the customer.
+              {t('admin.customers.customerInfo')}
             </DialogDescription>
           </DialogHeader>
           {selectedCustomer && (

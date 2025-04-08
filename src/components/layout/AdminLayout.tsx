@@ -19,6 +19,7 @@ import {
 import { Button } from "@/components/ui/button";
 import { userService } from "@/services/UserService";
 import { toast } from "sonner";
+import { useTranslation } from "@/hooks/use-translation";
 import {
   LayoutDashboard,
   Users,
@@ -34,10 +35,11 @@ import {
 const AdminLayout = () => {
   const navigate = useNavigate();
   const location = useLocation();
+  const { t } = useTranslation();
   
   const handleLogout = async () => {
     await userService.logout();
-    toast.success("Logged out successfully");
+    toast.success("Logout realizado com sucesso");
     navigate("/login");
   };
 
@@ -46,14 +48,14 @@ const AdminLayout = () => {
   };
 
   const menuItems = [
-    { title: "Dashboard", path: "/admin/dashboard", icon: LayoutDashboard },
-    { title: "Products", path: "/admin/products", icon: Package },
-    { title: "Orders", path: "/admin/orders", icon: ShoppingCart },
-    { title: "Customers", path: "/admin/customers", icon: Users },
-    { title: "Categories", path: "/admin/categories", icon: Tag },
-    { title: "Sales Analytics", path: "/admin/analytics", icon: TrendingUp },
-    { title: "Reports", path: "/admin/reports", icon: FileBarChart },
-    { title: "Settings", path: "/admin/settings", icon: Settings },
+    { title: t('admin.dashboard'), path: "/admin/dashboard", icon: LayoutDashboard },
+    { title: t('admin.products'), path: "/admin/produtos", icon: Package },
+    { title: t('admin.orders'), path: "/admin/pedidos", icon: ShoppingCart },
+    { title: t('admin.customers'), path: "/admin/clientes", icon: Users },
+    { title: t('admin.categories'), path: "/admin/categorias", icon: Tag },
+    { title: t('admin.analytics'), path: "/admin/analytics", icon: TrendingUp },
+    { title: t('admin.reports'), path: "/admin/relatorios", icon: FileBarChart },
+    { title: t('admin.settings'), path: "/admin/configuracoes", icon: Settings },
   ];
 
   return (
@@ -62,12 +64,12 @@ const AdminLayout = () => {
         <Sidebar>
           <SidebarHeader className="flex h-16 items-center border-b px-4">
             <Link to="/admin/dashboard" className="text-xl font-bold text-primary">
-              Admin Panel
+              {t('admin.panel')}
             </Link>
           </SidebarHeader>
           <SidebarContent>
             <SidebarGroup>
-              <SidebarGroupLabel>Navigation</SidebarGroupLabel>
+              <SidebarGroupLabel>{t('admin.navigation')}</SidebarGroupLabel>
               <SidebarGroupContent>
                 <SidebarMenu>
                   {menuItems.map((item) => (
@@ -95,7 +97,7 @@ const AdminLayout = () => {
               onClick={handleLogout}
             >
               <LogOut size={18} className="mr-2" />
-              Logout
+              {t('admin.logout')}
             </Button>
           </SidebarFooter>
         </Sidebar>
@@ -103,7 +105,7 @@ const AdminLayout = () => {
           <div className="flex flex-col h-full">
             <header className="h-14 border-b flex items-center px-6">
               <SidebarTrigger />
-              <div className="ml-4 font-medium">Admin Dashboard</div>
+              <div className="ml-4 font-medium">{t('admin.panel')}</div>
               <div className="ml-auto flex items-center gap-4">
                 {/* Admin user profile button could go here */}
               </div>

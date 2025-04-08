@@ -4,6 +4,7 @@ import { Outlet, Link, useNavigate, useLocation } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { userService } from "@/services/UserService";
 import { toast } from "sonner";
+import { useTranslation } from "@/hooks/use-translation";
 import {
   LayoutDashboard,
   Users,
@@ -12,7 +13,9 @@ import {
   Settings,
   LogOut,
   Menu,
-  ChevronLeft,
+  TrendingUp,
+  FileBarChart,
+  Tag
 } from "lucide-react";
 import {
   Sheet,
@@ -26,10 +29,11 @@ const MobileAdminLayout = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const navigate = useNavigate();
   const location = useLocation();
+  const { t } = useTranslation();
   
   const handleLogout = async () => {
     await userService.logout();
-    toast.success("Logged out successfully");
+    toast.success("Logout realizado com sucesso");
     navigate("/login");
   };
 
@@ -40,17 +44,20 @@ const MobileAdminLayout = () => {
   };
 
   const menuItems = [
-    { title: "Dashboard", path: "/admin/dashboard", icon: LayoutDashboard },
-    { title: "Products", path: "/admin/products", icon: Package },
-    { title: "Orders", path: "/admin/orders", icon: ShoppingCart },
-    { title: "Customers", path: "/admin/customers", icon: Users },
-    { title: "Settings", path: "/admin/settings", icon: Settings },
+    { title: t('admin.dashboard'), path: "/admin/dashboard", icon: LayoutDashboard },
+    { title: t('admin.products'), path: "/admin/produtos", icon: Package },
+    { title: t('admin.orders'), path: "/admin/pedidos", icon: ShoppingCart },
+    { title: t('admin.customers'), path: "/admin/clientes", icon: Users },
+    { title: t('admin.categories'), path: "/admin/categorias", icon: Tag },
+    { title: t('admin.analytics'), path: "/admin/analytics", icon: TrendingUp },
+    { title: t('admin.reports'), path: "/admin/relatorios", icon: FileBarChart },
+    { title: t('admin.settings'), path: "/admin/configuracoes", icon: Settings },
   ];
 
   // Get current page title
   const currentPageTitle = menuItems.find(
     item => isActive(item.path)
-  )?.title || "Admin";
+  )?.title || t('admin.panel');
 
   return (
     <div className="flex flex-col min-h-screen bg-background">
@@ -65,7 +72,7 @@ const MobileAdminLayout = () => {
           </SheetTrigger>
           <SheetContent side="left" className="w-[240px] sm:w-[300px]">
             <SheetHeader>
-              <SheetTitle className="text-left">Admin Panel</SheetTitle>
+              <SheetTitle className="text-left">{t('admin.panel')}</SheetTitle>
             </SheetHeader>
             <div className="flex flex-col gap-4 py-4">
               {menuItems.map((item) => (
@@ -90,7 +97,7 @@ const MobileAdminLayout = () => {
                 onClick={handleLogout}
               >
                 <LogOut className="h-5 w-5 mr-3" />
-                Logout
+                {t('admin.logout')}
               </Button>
             </div>
           </SheetContent>
@@ -106,7 +113,7 @@ const MobileAdminLayout = () => {
       {/* Mobile bottom navigation */}
       <nav className="fixed bottom-0 left-0 right-0 bg-background border-t z-30 py-2 px-4">
         <div className="grid grid-cols-5 gap-1">
-          {menuItems.map((item) => (
+          {menuItems.slice(0, 5).map((item) => (
             <Link
               key={item.path}
               to={item.path}
