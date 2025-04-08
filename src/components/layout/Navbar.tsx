@@ -1,6 +1,6 @@
 
 import { useState, useEffect } from 'react';
-import { Link, useLocation } from 'react-router-dom';
+import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { cn } from '@/lib/utils';
 import { Button } from '@/components/ui/button';
 import { 
@@ -27,7 +27,9 @@ import {
 const Navbar = () => {
   const [isScrolled, setIsScrolled] = useState(false);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+  const [searchQuery, setSearchQuery] = useState('');
   const location = useLocation();
+  const navigate = useNavigate();
   const isMobile = useIsMobile();
   const { t, language, setLanguage } = useTranslation();
   const { theme, setTheme } = useTheme();
@@ -47,14 +49,26 @@ const Navbar = () => {
     setMobileMenuOpen(false);
   }, [location.pathname]);
 
+  const handleSearch = () => {
+    if (searchQuery.trim()) {
+      navigate(`/produtos?search=${encodeURIComponent(searchQuery.trim())}`);
+    } else {
+      navigate('/produtos');
+    }
+  };
+
+  const handleUserIconClick = () => {
+    navigate('/login');
+  };
+
   const navLinks = [
     { name: t('common.home'), path: '/' },
-    { name: t('common.products'), path: '/products' },
-    { name: t('common.farmMachinery'), path: '/products?category=farm-machinery' },
-    { name: t('common.vehicles'), path: '/products?category=vehicles' },
-    { name: t('common.testimonials'), path: '/testimonials' },
-    { name: t('common.about'), path: '/about' },
-    { name: t('common.contact'), path: '/contact' },
+    { name: t('common.products'), path: '/produtos' },
+    { name: t('common.farmMachinery'), path: '/produtos?category=farm-machinery' },
+    { name: t('common.vehicles'), path: '/produtos?category=vehicles' },
+    { name: t('common.testimonials'), path: '/depoimentos' },
+    { name: t('common.about'), path: '/sobre' },
+    { name: t('common.contact'), path: '/contato' },
   ];
 
   return (
@@ -112,6 +126,7 @@ const Navbar = () => {
                 : "text-white hover:text-primary-foreground dark:text-white"
             )}
             aria-label={t('common.search')}
+            onClick={handleSearch}
           >
             <Search className="h-5 w-5" />
           </Button>
@@ -179,11 +194,12 @@ const Navbar = () => {
                 : "text-white hover:text-primary-foreground dark:text-white"
             )}
             aria-label={t('common.account')}
+            onClick={handleUserIconClick}
           >
             <User className="h-5 w-5" />
           </Button>
           
-          <Link to="/cart">
+          <Link to="/carrinho">
             <Button 
               variant="ghost" 
               size="icon" 
@@ -277,8 +293,9 @@ const Navbar = () => {
               </Button>
             </div>
             <Link 
-              to="/account" 
+              to="/login" 
               className="px-4 py-3 text-lg font-medium rounded-md hover:bg-muted dark:hover:bg-gray-800 flex items-center gap-3"
+              onClick={() => setMobileMenuOpen(false)}
             >
               <User className="h-5 w-5" />
               {t('common.account')}
