@@ -41,10 +41,10 @@ import {
   Download, 
   FileSpreadsheet, 
   FileText, 
-  FilePdf, 
   File
 } from "lucide-react";
 import { DateRangePicker } from "@/components/ui/date-range-picker";
+import { DateRange } from "react-day-picker";
 
 // Definição do esquema do formulário usando Zod
 const reportFormSchema = z.object({
@@ -106,7 +106,7 @@ const recentReports = [
 const getFormatIcon = (format: string) => {
   switch (format) {
     case "pdf":
-      return <FilePdf className="h-5 w-5 text-red-500" />;
+      return <FileText className="h-5 w-5 text-red-500" />;
     case "excel":
       return <FileSpreadsheet className="h-5 w-5 text-green-500" />;
     case "csv":
@@ -136,10 +136,7 @@ const getReportTypeName = (type: string, t: (key: string) => string) => {
 
 const Reports = () => {
   const { t } = useTranslation();
-  const [dateRange, setDateRange] = useState<{
-    from: Date;
-    to: Date;
-  }>({
+  const [dateRange, setDateRange] = useState<DateRange>({
     from: new Date(new Date().setDate(1)), // Primeiro dia do mês atual
     to: new Date(), // Hoje
   });
@@ -155,6 +152,12 @@ const Reports = () => {
   
   // Função para gerar relatório
   const onSubmit = (data: ReportFormValues) => {
+    // Validar se temos um período selecionado
+    if (!dateRange.from || !dateRange.to) {
+      toast.error("Selecione um período para o relatório");
+      return;
+    }
+    
     // Gerar o nome do relatório baseado nos dados
     const reportName = `${getReportTypeName(data.type, t)} - ${format(dateRange.from, "dd/MM/yyyy")} a ${format(dateRange.to, "dd/MM/yyyy")}`;
     
