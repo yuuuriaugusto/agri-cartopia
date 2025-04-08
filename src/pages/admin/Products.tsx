@@ -1,4 +1,3 @@
-
 import React, { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -31,6 +30,7 @@ import { Product } from "@/context/ProductContext";
 import ProductForm from "@/components/admin/ProductForm";
 import { toast } from "sonner";
 import { useTranslation } from "@/hooks/use-translation";
+import { ScrollArea } from "@/components/ui/scroll-area";
 
 const Products = () => {
   const [isAddDialogOpen, setIsAddDialogOpen] = useState(false);
@@ -159,31 +159,35 @@ const Products = () => {
       )}
 
       <Dialog open={isAddDialogOpen} onOpenChange={setIsAddDialogOpen}>
-        <DialogContent className="sm:max-w-[600px]">
+        <DialogContent className="sm:max-w-[600px] max-h-[90vh]">
           <DialogHeader>
             <DialogTitle>{t('admin.products.addNew')}</DialogTitle>
           </DialogHeader>
-          <ProductForm 
-            onSubmit={async () => {
-              await refetch();
-              setIsAddDialogOpen(false);
-            }}
-          />
+          <ScrollArea className="max-h-[calc(90vh-120px)] overflow-auto pr-4">
+            <ProductForm 
+              onSubmit={async () => {
+                await refetch();
+                setIsAddDialogOpen(false);
+              }}
+            />
+          </ScrollArea>
         </DialogContent>
       </Dialog>
 
       <Dialog open={isEditDialogOpen} onOpenChange={setIsEditDialogOpen}>
-        <DialogContent className="sm:max-w-[600px]">
+        <DialogContent className="sm:max-w-[600px] max-h-[90vh]">
           <DialogHeader>
             <DialogTitle>{t('admin.products.editProduct')}</DialogTitle>
           </DialogHeader>
-          <ProductForm 
-            product={selectedProduct}
-            onSubmit={async () => {
-              await refetch();
-              setIsEditDialogOpen(false);
-            }}
-          />
+          <ScrollArea className="max-h-[calc(90vh-120px)] overflow-auto pr-4">
+            <ProductForm 
+              product={selectedProduct}
+              onSubmit={async () => {
+                await refetch();
+                setIsEditDialogOpen(false);
+              }}
+            />
+          </ScrollArea>
         </DialogContent>
       </Dialog>
     </div>

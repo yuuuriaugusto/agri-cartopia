@@ -1,4 +1,3 @@
-
 import React, { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -45,8 +44,8 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
 import { useTranslation } from "@/hooks/use-translation";
 import { Plus, MoreHorizontal, Pencil, Trash2, Search } from "lucide-react";
+import { ScrollArea } from "@/components/ui/scroll-area";
 
-// Definição do esquema de categoria usando Zod
 const categorySchema = z.object({
   id: z.string().optional(),
   name: z.string().min(2, { message: "Nome deve ter pelo menos 2 caracteres" }),
@@ -57,7 +56,6 @@ const categorySchema = z.object({
 
 type CategoryFormValues = z.infer<typeof categorySchema>;
 
-// Dados de exemplo para categorias
 const mockCategories = [
   { id: "1", name: "Maquinário Agrícola", slug: "maquinario-agricola", description: "Equipamentos e máquinas para agricultura", parentId: null, products: 15 },
   { id: "2", name: "Tratores", slug: "tratores", description: "Tratores de diversos tamanhos e potências", parentId: "1", products: 8 },
@@ -117,7 +115,6 @@ const Categories = () => {
   const handleDeleteCategory = (id: string) => {
     if (window.confirm(t('admin.categories.confirmDelete'))) {
       try {
-        // Filtrar a categoria e suas subcategorias
         const updatedCategories = categories.filter(cat => cat.id !== id && cat.parentId !== id);
         setCategories(updatedCategories);
         toast.success(t('admin.categories.deleted'));
@@ -160,7 +157,6 @@ const Categories = () => {
     toast.success("Categoria atualizada com sucesso");
   };
 
-  // Função auxiliar para gerar o slug a partir do nome
   const generateSlug = (name: string) => {
     return name
       .toLowerCase()
@@ -171,7 +167,6 @@ const Categories = () => {
       .replace(/^-|-$/g, '');
   };
 
-  // Acompanhar mudanças no nome para gerar o slug automaticamente
   React.useEffect(() => {
     const subscription = form.watch((value, { name }) => {
       if (name === 'name') {
@@ -190,13 +185,11 @@ const Categories = () => {
     return () => subscription.unsubscribe();
   }, [editForm]);
 
-  // Filtra as categorias com base na consulta de pesquisa
   const filteredCategories = categories.filter(category =>
     category.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
     category.description?.toLowerCase().includes(searchQuery.toLowerCase())
   );
 
-  // Formata o nome da categoria pai
   const getParentName = (parentId: string | null) => {
     if (!parentId) return "—";
     const parent = categories.find(cat => cat.id === parentId);
@@ -275,171 +268,173 @@ const Categories = () => {
         </Table>
       </div>
 
-      {/* Diálogo para adicionar categoria */}
       <Dialog open={isAddDialogOpen} onOpenChange={setIsAddDialogOpen}>
-        <DialogContent className="sm:max-w-[500px]">
+        <DialogContent className="sm:max-w-[500px] max-h-[90vh]">
           <DialogHeader>
             <DialogTitle>{t('admin.categories.addNew')}</DialogTitle>
           </DialogHeader>
-          <Form {...form}>
-            <form onSubmit={form.handleSubmit(onSubmitAdd)} className="space-y-4">
-              <FormField
-                control={form.control}
-                name="name"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel>{t('admin.categories.name')}</FormLabel>
-                    <FormControl>
-                      <Input placeholder="Nome da categoria" {...field} />
-                    </FormControl>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
-              <FormField
-                control={form.control}
-                name="slug"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel>{t('admin.categories.slug')}</FormLabel>
-                    <FormControl>
-                      <Input placeholder="slug-da-categoria" {...field} />
-                    </FormControl>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
-              <FormField
-                control={form.control}
-                name="description"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel>{t('admin.categories.description')}</FormLabel>
-                    <FormControl>
-                      <Textarea placeholder="Descrição da categoria" {...field} />
-                    </FormControl>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
-              <FormField
-                control={form.control}
-                name="parentId"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel>{t('admin.categories.parent')}</FormLabel>
-                    <Select
-                      onValueChange={field.onChange}
-                      defaultValue={field.value}
-                    >
+          <ScrollArea className="max-h-[calc(90vh-120px)] overflow-auto pr-4">
+            <Form {...form}>
+              <form onSubmit={form.handleSubmit(onSubmitAdd)} className="space-y-4">
+                <FormField
+                  control={form.control}
+                  name="name"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel>{t('admin.categories.name')}</FormLabel>
                       <FormControl>
-                        <SelectTrigger>
-                          <SelectValue placeholder="Selecione uma categoria pai (opcional)" />
-                        </SelectTrigger>
+                        <Input placeholder="Nome da categoria" {...field} />
                       </FormControl>
-                      <SelectContent>
-                        <SelectItem value="">Nenhuma (categoria principal)</SelectItem>
-                        {categories.map((cat) => (
-                          <SelectItem key={cat.id} value={cat.id}>
-                            {cat.name}
-                          </SelectItem>
-                        ))}
-                      </SelectContent>
-                    </Select>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
-              <DialogFooter>
-                <Button type="submit">Adicionar Categoria</Button>
-              </DialogFooter>
-            </form>
-          </Form>
-        </DialogContent>
-      </Dialog>
-
-      {/* Diálogo para editar categoria */}
-      <Dialog open={isEditDialogOpen} onOpenChange={setIsEditDialogOpen}>
-        <DialogContent className="sm:max-w-[500px]">
-          <DialogHeader>
-            <DialogTitle>{t('admin.categories.editCategory')}</DialogTitle>
-          </DialogHeader>
-          <Form {...editForm}>
-            <form onSubmit={editForm.handleSubmit(onSubmitEdit)} className="space-y-4">
-              <FormField
-                control={editForm.control}
-                name="name"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel>{t('admin.categories.name')}</FormLabel>
-                    <FormControl>
-                      <Input placeholder="Nome da categoria" {...field} />
-                    </FormControl>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
-              <FormField
-                control={editForm.control}
-                name="slug"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel>{t('admin.categories.slug')}</FormLabel>
-                    <FormControl>
-                      <Input placeholder="slug-da-categoria" {...field} />
-                    </FormControl>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
-              <FormField
-                control={editForm.control}
-                name="description"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel>{t('admin.categories.description')}</FormLabel>
-                    <FormControl>
-                      <Textarea placeholder="Descrição da categoria" {...field} />
-                    </FormControl>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
-              <FormField
-                control={editForm.control}
-                name="parentId"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel>{t('admin.categories.parent')}</FormLabel>
-                    <Select
-                      onValueChange={field.onChange}
-                      defaultValue={field.value}
-                    >
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+                <FormField
+                  control={form.control}
+                  name="slug"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel>{t('admin.categories.slug')}</FormLabel>
                       <FormControl>
-                        <SelectTrigger>
-                          <SelectValue placeholder="Selecione uma categoria pai (opcional)" />
-                        </SelectTrigger>
+                        <Input placeholder="slug-da-categoria" {...field} />
                       </FormControl>
-                      <SelectContent>
-                        <SelectItem value="">Nenhuma (categoria principal)</SelectItem>
-                        {categories
-                          .filter(cat => cat.id !== selectedCategory?.id) // Evitar categoria atual como pai
-                          .map((cat) => (
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+                <FormField
+                  control={form.control}
+                  name="description"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel>{t('admin.categories.description')}</FormLabel>
+                      <FormControl>
+                        <Textarea placeholder="Descrição da categoria" {...field} />
+                      </FormControl>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+                <FormField
+                  control={form.control}
+                  name="parentId"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel>{t('admin.categories.parent')}</FormLabel>
+                      <Select
+                        onValueChange={field.onChange}
+                        defaultValue={field.value}
+                      >
+                        <FormControl>
+                          <SelectTrigger>
+                            <SelectValue placeholder="Selecione uma categoria pai (opcional)" />
+                          </SelectTrigger>
+                        </FormControl>
+                        <SelectContent>
+                          <SelectItem value="">Nenhuma (categoria principal)</SelectItem>
+                          {categories.map((cat) => (
                             <SelectItem key={cat.id} value={cat.id}>
                               {cat.name}
                             </SelectItem>
                           ))}
-                      </SelectContent>
-                    </Select>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
-              <DialogFooter>
-                <Button type="submit">Atualizar Categoria</Button>
-              </DialogFooter>
-            </form>
-          </Form>
+                        </SelectContent>
+                      </Select>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+                <DialogFooter>
+                  <Button type="submit">Adicionar Categoria</Button>
+                </DialogFooter>
+              </form>
+            </Form>
+          </ScrollArea>
+        </DialogContent>
+      </Dialog>
+
+      <Dialog open={isEditDialogOpen} onOpenChange={setIsEditDialogOpen}>
+        <DialogContent className="sm:max-w-[500px] max-h-[90vh]">
+          <DialogHeader>
+            <DialogTitle>{t('admin.categories.editCategory')}</DialogTitle>
+          </DialogHeader>
+          <ScrollArea className="max-h-[calc(90vh-120px)] overflow-auto pr-4">
+            <Form {...editForm}>
+              <form onSubmit={editForm.handleSubmit(onSubmitEdit)} className="space-y-4">
+                <FormField
+                  control={editForm.control}
+                  name="name"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel>{t('admin.categories.name')}</FormLabel>
+                      <FormControl>
+                        <Input placeholder="Nome da categoria" {...field} />
+                      </FormControl>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+                <FormField
+                  control={editForm.control}
+                  name="slug"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel>{t('admin.categories.slug')}</FormLabel>
+                      <FormControl>
+                        <Input placeholder="slug-da-categoria" {...field} />
+                      </FormControl>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+                <FormField
+                  control={editForm.control}
+                  name="description"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel>{t('admin.categories.description')}</FormLabel>
+                      <FormControl>
+                        <Textarea placeholder="Descrição da categoria" {...field} />
+                      </FormControl>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+                <FormField
+                  control={editForm.control}
+                  name="parentId"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel>{t('admin.categories.parent')}</FormLabel>
+                      <Select
+                        onValueChange={field.onChange}
+                        defaultValue={field.value}
+                      >
+                        <FormControl>
+                          <SelectTrigger>
+                            <SelectValue placeholder="Selecione uma categoria pai (opcional)" />
+                          </SelectTrigger>
+                        </FormControl>
+                        <SelectContent>
+                          <SelectItem value="">Nenhuma (categoria principal)</SelectItem>
+                          {categories
+                            .filter(cat => cat.id !== selectedCategory?.id)
+                            .map((cat) => (
+                              <SelectItem key={cat.id} value={cat.id}>
+                                {cat.name}
+                              </SelectItem>
+                            ))}
+                        </SelectContent>
+                      </Select>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+                <DialogFooter>
+                  <Button type="submit">Atualizar Categoria</Button>
+                </DialogFooter>
+              </form>
+            </Form>
+          </ScrollArea>
         </DialogContent>
       </Dialog>
     </div>
