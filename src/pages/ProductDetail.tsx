@@ -21,6 +21,7 @@ import { cn } from '@/lib/utils';
 import Navbar from '@/components/layout/Navbar';
 import Footer from '@/components/layout/Footer';
 import ProductCard from '@/components/ui/product-card';
+import { Seo } from '@/components/seo/Seo';
 import AddToCartButton from '@/components/ui/botao-adicionar-carrinho';
 import { useProducts } from '@/context/ProductContext';
 
@@ -39,7 +40,7 @@ const ProductDetail = () => {
       <div className="min-h-screen flex items-center justify-center">
         <div className="text-center">
           <h2 className="text-2xl font-medium mb-4">Product not found</h2>
-          <Button onClick={() => navigate('/products')}>Back to Products</Button>
+          <Button onClick={() => navigate('/produtos')}>Back to Products</Button>
         </div>
       </div>
     );
@@ -95,6 +96,7 @@ const ProductDetail = () => {
   return (
     <div className="flex flex-col min-h-screen">
       <Navbar />
+      <Seo title={`${name} | ${brand}`} description={description?.slice(0, 150)} />
       
       <main className="flex-grow pt-24">
         <div className="container py-8">
@@ -102,10 +104,10 @@ const ProductDetail = () => {
           <div className="flex items-center text-sm text-muted-foreground mb-8">
             <Link to="/" className="hover:text-foreground">Home</Link>
             <ChevronRight className="h-4 w-4 mx-2" />
-            <Link to="/products" className="hover:text-foreground">Products</Link>
+            <Link to="/produtos" className="hover:text-foreground">Products</Link>
             <ChevronRight className="h-4 w-4 mx-2" />
             <Link 
-              to={`/products?category=${category}`} 
+              to={`/produtos?category=${category}`} 
               className="hover:text-foreground capitalize"
             >
               {category.replace('-', ' ')}
@@ -121,6 +123,8 @@ const ProductDetail = () => {
                 <img 
                   src={images[activeImageIndex]} 
                   alt={name} 
+                  loading="lazy"
+                  decoding="async"
                   className="w-full h-full object-cover"
                 />
                 
@@ -184,6 +188,8 @@ const ProductDetail = () => {
                     <img 
                       src={img} 
                       alt={`Thumbnail ${idx}`} 
+                      loading="lazy"
+                      decoding="async"
                       className="w-16 h-16 object-cover"
                     />
                   </button>
@@ -419,7 +425,7 @@ const ProductDetail = () => {
           
           <div className="mt-16 text-center">
             <Button variant="outline" asChild>
-              <Link to="/products" className="flex items-center gap-2">
+              <Link to="/produtos" className="flex items-center gap-2">
                 <ArrowLeft className="h-4 w-4" /> Back to Products
               </Link>
             </Button>

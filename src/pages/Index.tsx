@@ -34,10 +34,10 @@ const Index = () => {
   ];
 
   const categories = [
-    { name: "Farm Machinery", icon: <Tractor />, path: "/products?category=farm-machinery" },
-    { name: "Irrigation Systems", icon: <Settings />, path: "/products?category=irrigation" },
-    { name: "Vehicles", icon: <Truck />, path: "/products?category=vehicles" },
-    { name: "Implements", icon: <ShoppingBag />, path: "/products?category=implements" },
+    { name: "Farm Machinery", icon: <Tractor />, path: "/produtos?category=farm-machinery" },
+    { name: "Irrigation Systems", icon: <Settings />, path: "/produtos?category=irrigation" },
+    { name: "Vehicles", icon: <Truck />, path: "/produtos?category=vehicles" },
+    { name: "Implements", icon: <ShoppingBag />, path: "/produtos?category=implements" },
   ];
 
   // Auto rotate hero images
@@ -94,10 +94,10 @@ const Index = () => {
           
           <div className="flex flex-wrap gap-4 opacity-0 animate-fade-in" style={{animationDelay: '700ms', animationFillMode: 'forwards'}}>
             <Button size="lg" asChild>
-              <Link to="/products">Browse Products</Link>
+              <Link to="/produtos">Browse Products</Link>
             </Button>
             <Button size="lg" variant="outline" className="text-white border-white/50 hover:bg-white/10" asChild>
-              <Link to="/contact">Contact Sales</Link>
+              <Link to="/contato">Contact Sales</Link>
             </Button>
           </div>
         </div>
@@ -218,7 +218,7 @@ const Index = () => {
               
               <div className="mt-8">
                 <Button size="lg" asChild>
-                  <Link to="/products">View All Products</Link>
+                  <Link to="/produtos">View All Products</Link>
                 </Button>
               </div>
             </div>
@@ -265,10 +265,10 @@ const Index = () => {
             </p>
             <div className="flex flex-wrap justify-center gap-4">
               <Button size="lg" className="min-w-36" asChild>
-                <Link to="/products">Shop Now</Link>
+                <Link to="/produtos">Shop Now</Link>
               </Button>
               <Button size="lg" variant="outline" className="text-white border-white min-w-36" asChild>
-                <Link to="/contact">Contact Us</Link>
+                <Link to="/contato">Contact Us</Link>
               </Button>
             </div>
           </div>

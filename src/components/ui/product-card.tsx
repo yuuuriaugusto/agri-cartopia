@@ -41,7 +41,7 @@ const ProductCard = ({ product, size = 'md', className }: ProductCardProps) => {
       )}
     >
       {/* Image */}
-      <Link to={`/products/${id}`} className="block overflow-hidden">
+      <Link to={`/produtos/${id}`} className="block overflow-hidden">
         <div className={cn(
           "relative overflow-hidden",
           size === 'sm' ? 'h-40' : size === 'lg' ? 'h-64' : 'h-52'
@@ -49,6 +49,8 @@ const ProductCard = ({ product, size = 'md', className }: ProductCardProps) => {
           <img 
             src={images[0]} 
             alt={name}
+            loading="lazy"
+            decoding="async"
             className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
           />
           
@@ -110,7 +112,7 @@ const ProductCard = ({ product, size = 'md', className }: ProductCardProps) => {
           </div>
           
           <div className="flex gap-2">
-            <Link to={`/products/${id}`}>
+            <Link to={`/produtos/${id}`}>
               <Button variant="outline" size="sm" className="h-9 w-9 p-0">
                 <ArrowRight className="h-4 w-4" />
               </Button>

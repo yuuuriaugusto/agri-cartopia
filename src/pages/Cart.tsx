@@ -60,7 +60,7 @@ const Cart = () => {
                 Looks like you haven't added any products to your cart yet. Browse our catalog to find premium agricultural equipment.
               </p>
               <Button size="lg" asChild>
-                <Link to="/products">Browse Products</Link>
+                <Link to="/produtos">Browse Products</Link>
               </Button>
             </div>
           </div>
@@ -123,6 +123,8 @@ const Cart = () => {
                       <img 
                         src={item.image} 
                         alt={item.name} 
+                        loading="lazy"
+                        decoding="async"
                         className="w-full h-full object-cover"
                       />
                     </div>
@@ -131,7 +133,7 @@ const Cart = () => {
                       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
                         <div>
                           <Link 
-                            to={`/products/${item.id}`}
+                            to={`/produtos/${item.id}`}
                             className="text-lg font-medium hover:text-primary transition-colors"
                           >
                             {item.name}
@@ -186,7 +188,7 @@ const Cart = () => {
               
               <div className="mt-8 flex flex-col sm:flex-row sm:justify-between items-center gap-4">
                 <Button variant="outline" asChild>
-                  <Link to="/products" className="flex items-center gap-2">
+                  <Link to="/produtos" className="flex items-center gap-2">
                     <ArrowLeft className="h-4 w-4" /> Continue Shopping
                   </Link>
                 </Button>

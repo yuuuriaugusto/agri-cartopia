@@ -36,10 +36,10 @@ const Indice = () => {
   ];
 
   const categories = [
-    { name: t('home.categories.farmMachinery'), icon: <Tractor />, path: "/products?category=farm-machinery" },
-    { name: t('home.categories.irrigation'), icon: <Settings />, path: "/products?category=irrigation" },
-    { name: t('home.categories.vehicles'), icon: <Truck />, path: "/products?category=vehicles" },
-    { name: t('home.categories.implements'), icon: <ShoppingBag />, path: "/products?category=implements" },
+    { name: t('home.categories.farmMachinery'), icon: <Tractor />, path: "/produtos?category=farm-machinery" },
+    { name: t('home.categories.irrigation'), icon: <Settings />, path: "/produtos?category=irrigation" },
+    { name: t('home.categories.vehicles'), icon: <Truck />, path: "/produtos?category=vehicles" },
+    { name: t('home.categories.implements'), icon: <ShoppingBag />, path: "/produtos?category=implements" },
   ];
 
   // Auto rotate hero images

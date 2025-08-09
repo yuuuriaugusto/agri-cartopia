@@ -44,10 +44,10 @@ const Footer = () => {
             <h3 className="text-lg font-medium mb-4">{t('footer.quickLinks')}</h3>
             <ul className="space-y-2">
               {[
-                { label: t('common.products'), path: '/products' },
-                { label: t('common.about'), path: '/about' },
-                { label: t('common.contact'), path: '/contact' },
-                { label: t('common.testimonials'), path: '/testimonials' },
+                { label: t('common.products'), path: '/produtos' },
+                { label: t('common.about'), path: '/sobre' },
+                { label: t('common.contact'), path: '/contato' },
+                { label: t('common.testimonials'), path: '/depoimentos' },
                 { label: 'FAQ', path: '/faq' },
                 { label: t('common.termsAndConditions'), path: '/terms' },
                 { label: t('common.privacyPolicy'), path: '/privacy' }
@@ -79,7 +79,7 @@ const Footer = () => {
               ].map((item) => (
                 <li key={item}>
                   <Link 
-                    to={`/products?category=${item.toLowerCase().replace(/\s+/g, '-')}`}
+                    to={`/produtos?category=${item.toLowerCase().replace(/\s+/g, '-')}`}
                     className="text-earth-100/80 hover:text-white transition-colors hover-underline text-sm"
                   >
                     {item}

@@ -124,7 +124,7 @@ const OrderTracking = () => {
                       <CardDescription>Placed on {formatDate(orderStatus.orderDate)}</CardDescription>
                     </div>
                     <Button variant="outline" className="mt-4 sm:mt-0" asChild>
-                      <Link to="/products">
+                      <Link to="/produtos">
                         <ArrowLeft className="mr-2 h-4 w-4" /> Shop Again
                       </Link>
                     </Button>
@@ -298,12 +298,14 @@ const OrderTracking = () => {
                             <img
                               src={item.image}
                               alt={item.name}
+                              loading="lazy"
+                              decoding="async"
                               className="w-full h-full object-cover"
                             />
                           </div>
                           <div className="flex-grow">
                             <Link
-                              to={`/products/${item.id}`}
+                              to={`/produtos/${item.id}`}
                               className="font-medium hover:text-primary transition-colors"
                             >
                               {item.name}
@@ -420,7 +422,7 @@ const OrderTracking = () => {
               </div>
               <div className="flex gap-4">
                 <Button variant="outline" asChild>
-                  <Link to="/contact">Contact Support</Link>
+                  <Link to="/contato">Contact Support</Link>
                 </Button>
                 <Button asChild>
                   <Link to="/faq">View FAQs</Link>
